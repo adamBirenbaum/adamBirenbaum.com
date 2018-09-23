@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 2.4.0">
+  <meta name="generator" content="Hugo 0.48" />
+  <meta name="author" content="Adam Birenbaum">
+
+  
+  
+  
+  
+    
+  
+  <meta name="description" content="To understand recursion, you must first understand recursion">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/post/madison-eats/">
+
+  
+
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="hsl(339, 90%, 68%)">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/dracula.min.css" crossorigin="anonymous">
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700%7cMerriweather%7cRoboto&#43;Mono">
+  
+
+  <link rel="stylesheet" href="/styles.css">
+  
+
+  
+  
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-120708407-1', 'auto');
+      
+      ga('require', 'eventTracker');
+      ga('require', 'outboundLinkTracker');
+      ga('require', 'urlChangeTracker');
+      ga('send', 'pageview');
+    </script>
+    <script async src="//www.google-analytics.com/analytics.js"></script>
+    
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js" integrity="sha512-HUmooslVKj4m6OBu0OgzjXXr+QuFYy/k7eLI5jdeEy/F4RSgMn6XRWRGkFi5IFaFgy7uFTkegp3Z0XnJf3Jq+g==" crossorigin="anonymous"></script>
+    
+  
+  
+
+  
+  <link rel="alternate" href="/index.xml" type="application/rss+xml" title="">
+  <link rel="feed" href="/index.xml" type="application/rss+xml" title="">
+  
+
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="/post/madison-eats/">
+
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="og:site_name" content="">
+  <meta property="og:url" content="/post/madison-eats/">
+  <meta property="og:title" content="Efficiently Scrape all Restaurant data in a County  | ">
+  <meta property="og:description" content="To understand recursion, you must first understand recursion">
+  
+  
+    
+  <meta property="og:image" content="/img/headers/madison-eats_blog_header.png">
+  <meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2016-04-20T00:00:00-05:00">
+  
+  <meta property="article:modified_time" content="2018-01-13T00:00:00-06:00">
+  
+
+  
+
+  
+
+  <title>Efficiently Scrape all Restaurant data in a County  | </title>
+
+</head>
+<body id="top" data-spy="scroll" data-target="#TableOfContents" data-offset="71" class="dark">
+
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/"></a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav ml-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#about">
+            
+            <span>Home</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#projects">
+            
+            <span>Projects</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#posts">
+            
+            <span>Posts</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+      
+
+        
+
+        
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+<div class="article-header">
+  
+  
+    <img src="/img/headers/madison-eats_blog_header.png" class="article-banner" itemprop="image">
+  
+
+  <span class="article-header-caption">Image credit: <a href="https://github.com/gcushen/hugo-academic/" target="_blank"><strong>Academic</strong></a></span>
+</div>
+
+
+
+  <div class="article-container">
+    <h1 itemprop="name">Efficiently Scrape all Restaurant data in a County </h1>
+
+    
+
+<div class="article-metadata">
+
+  
+  
+  <span itemscope itemprop="author" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Adam Birenbaum">
+  </span>
+  
+
+  <span class="article-date">
+    
+        Last updated on
+    
+    <meta content="2016-04-20 00:00:00 -0500 CDT" itemprop="datePublished">
+    <time datetime="2018-01-13 00:00:00 -0600 CST" itemprop="dateModified">
+      Jan 13, 2018
+    </time>
+  </span>
+  <span itemscope itemprop="publisher" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Adam Birenbaum">
+  </span>
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    4 min read
+  </span>
+  
+
+  
+  
+
+  
+
+  
+  
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=Efficiently%20Scrape%20all%20Restaurant%20data%20in%20a%20County%20&amp;url=%2fpost%2fmadison-eats%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=%2fpost%2fmadison-eats%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2fpost%2fmadison-eats%2f&amp;title=Efficiently%20Scrape%20all%20Restaurant%20data%20in%20a%20County%20"
+         target="_blank" rel="noopener">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=%2fpost%2fmadison-eats%2f&amp;title=Efficiently%20Scrape%20all%20Restaurant%20data%20in%20a%20County%20"
+         target="_blank" rel="noopener">
+        <i class="fab fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=Efficiently%20Scrape%20all%20Restaurant%20data%20in%20a%20County%20&amp;body=%2fpost%2fmadison-eats%2f">
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+
+    <div class="article-style" itemprop="articleBody">
+      <p>While developing my restaurant mapping project, <a href="http://adambirenbaum.com/project/madison-eats/" target="_blank">Madison eats</a>, I came across an interesting problem.  I intended to use the API from a popular restaurant review website to populate my application, but like many public API&rsquo;s there were reasonable limits in place.  Given an exact location and radius, the api would return a maximum of 50 restaurants per call with 5,000 calls allowed per day.  With these constraints, <em>what is the best method to get the data for all restaurants in a region</em>.</p>
+
+<p>The problem is analogous to dropping circuluar fishing nets in the ocean.  If each net has a maximum capacity of 50 fish and their radius is allowed to vary, what strategy will allow you to catch the most fish using the fewest nets?</p>
+
+<p>To use the absolute fewest nets, you would need some prior knowlegdge of the fish density in the region.  What regions are densely populated with fish (you&rsquo;ll need a small net) and what regions are sparse (you can use a larger net)?  With that information, this becomes a simple optimaztion problem to pick a precise net size and location to catch all the fish with relatively few nets&hellip; but what if you don&rsquo;t know where the fish are ahead of time?</p>
+
+<p>For my project, I know the region&rsquo;s coordinates, but I don&rsquo;t have any information on the number of restaurants or their location within that region.  In fact, the whole purpose of this data extraction process is to get the location of the restaurants along with some of its attributes.  Clearly, the ideal strategy as described with the fish is not possible.</p>
+
+<p>A simple, brute force method would be to pick a constant search radius, start at one corner of the region and iterate across the region, weaving back and forth just as you would when mowing the lawn.  Picking a proper search radius is an obvious problem with this strategy.  If you chose a radius, implemented the method and found that some calls included 50 restaurants, then either that search region happened to have exactly 50 restaurants, or more likely there were more than 50 and some restaurants were left out.  You would then have to decrease your search radius and try again, hoping there wasn&rsquo;t a search region with more than 50.  To fullfill this method with the fewest amount of API calls you would need to specify a search region small enough to include all of the restaurants in the most densely populated area of the overall region.  This of course means that in the sparsely populated regions you would make API calls in search areas with very few or no restaurants.</p>
+
+<p>Embarassingly, I used this brute force method when I initially attempted to get the restaurant data in Dane county and it required more than 4,000 calls.  To put in respective how inefficent this method is, with 4,000 calls one could extract a maximum of 200,000 restaurants.  There are just over 1,200 restaurants in Dane county, nowhere near 200,000.</p>
+
+<p>The much better solution I came up with is to use recursion.  You first divide up the overall region into a grid of four equally sized rectangles or squares.  Then make an api call in the center of the top-left rectangle with a radius such that it just barely includes the entire rectangle.  Find the number of restaurants returned from that region.  If there are less than 50, you move to the next rectangle.  If there are more than 50, subdivide that top-left rectangle into four more regions and repeat.  This strategy uses very few search regions for sparsely populated areas.  For more densely populated areas, this strategy will need to waste some API calls before its search region decreases enough such that there are fewer than 50 restaurants within it.  For example lets say there are 200 restaurants just in the top-left corner of the subdivided region.  That top-left region may need to be divided three or four times before the search region is small enough, and therefore those first three or four api calls were essentially a waste.  When no prior knowledge is had, this &ldquo;waste&rdquo; is a sacrifice well worth making.</p>
+
+<p>Using this recursive method, it took about 300 api calls to get all of the restaurant data in Dane County, more than 13 times fewer than the brute force method.</p>
+
+<p><a href="~/Downloads/Dane-WI_map.html" target="_blank">here</a></p>
+
+    </div>
+
+    
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/academic/">academic</a>
+  
+</div>
+
+
+
+
+    
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+<div class="container">
+  <footer class="site-footer">
+  
+  <p class="powered-by">
+    <a href="/privacy/">Privacy Policy</a>
+  </p>
+  
+
+  <p class="powered-by">
+    &copy; 2018 &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+</div>
+
+
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+    
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        CommonHTML: { linebreaks: { automatic: true } },
+        tex2jax: { inlineMath: [ ['$', '$'], ['\\(','\\)'] ], displayMath: [ ['$$','$$'], ['\\[', '\\]'] ], processEscapes: false },
+        TeX: { noUndefined: { attributes: { mathcolor: 'red', mathbackground: '#FFEEEE', mathsize: '90%' } } },
+        messageStyle: 'none'
+      });
+    </script>
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.3/imagesloaded.pkgd.min.js" integrity="sha512-umsR78NN0D23AzgoZ11K7raBD+R6hqKojyBZs1w8WvYlsI+QuKRGBx3LFCwhatzBunCjDuJpDHwxD13sLMbpRA==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha256-VsEqElsCHSGmnmHXGQzvoWjWwoznFSZc6hs7ARLRacQ=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+        
+      
+
+      
+      
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_CHTML-full" integrity="sha256-GhM+5JHb6QUzOQPXSJLEWP7R73CbkisjzK5Eyij4U9w=" crossorigin="anonymous" async></script>
+      
+    
+
+    <script src="/js/hugo-academic.js"></script>
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "Search Results",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+    
+
+  </body>
+</html>
+

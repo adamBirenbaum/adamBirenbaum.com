@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on </title>
+    <link>/post/</link>
+    <description>Recent content in Posts on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2018</copyright>
+    <lastBuildDate>Sun, 01 Jan 2017 00:00:00 -0600</lastBuildDate>
+    
+	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Efficiently Scrape all Restaurant data in a County </title>
+      <link>/post/madison-eats/</link>
+      <pubDate>Wed, 20 Apr 2016 00:00:00 -0500</pubDate>
+      
+      <guid>/post/madison-eats/</guid>
+      <description>While developing my restaurant mapping project, Madison eats, I came across an interesting problem. I intended to use the API from a popular restaurant review website to populate my application, but like many public API&amp;rsquo;s there were reasonable limits in place. Given an exact location and radius, the api would return a maximum of 50 restaurants per call with 5,000 calls allowed per day. With these constraints, what is the best method to get the data for all restaurants in a region.</description>
+    </item>
+    
+  </channel>
+</rss>
