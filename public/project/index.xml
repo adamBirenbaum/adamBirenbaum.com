@@ -66,5 +66,15 @@
       <description>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum. Sed ac faucibus dolor, scelerisque sollicitudin nisi. Cras purus urna, suscipit quis sapien eu, pulvinar tempor diam. Quisque risus orci, mollis id ante sit amet, gravida egestas nisl. Sed ac tempus magna. Proin in dui enim. Donec condimentum, sem id dapibus fringilla, tellus enim condimentum arcu, nec volutpat est felis vel metus.</description>
     </item>
     
+    <item>
+      <title> </title>
+      <link>/project/lin-tutorial-doc/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/project/lin-tutorial-doc/</guid>
+      <description>Linear Algebgra Tutorial Vector Basics   Testing   Transformations   Matrix Multiplication   Systems of Equations  To learn more, see Interactive Documents.
+ EigenVectors    </description>
+    </item>
+    
   </channel>
 </rss>
