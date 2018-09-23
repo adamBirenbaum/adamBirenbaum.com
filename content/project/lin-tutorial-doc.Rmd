@@ -1,7 +1,6 @@
 ---
 title: " "
-runtime: shiny
-#output: html_document
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -11,362 +10,159 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Linear Algebgra Tutorial 
 ### Vector Basics
 ```{r echo = F}
-path_to_gifs <- ifelse(Sys.info()['nodename'] =="adamubuntu", "~/adambirenbaum.com/public/project/linear-algebra-tutorial/gifs/", "/var/www/adambirenbaum.com/public/project/linear-algebra-tutorial/gifs/")
+path_to_gifs <- ifelse(Sys.info()['nodename'] =="adamubuntu", "~/adambirenbaum.com/static/img/gifs/", "/var/www/adambirenbaum.com/static/img/gifs/")
 #path_to_gifs <- "~/throw_away_files/adambirenbaum.com/public/project/linear-algebra-tutorial/gifs/"
 
 
 ```
 
-## Testing
 
-![](~/adambirenbaum.com/public/project/linear-algebra-tutorial/gifs/vector_basic.gif)
+$$\vec{v} \text{ is the vector addition of the scaled basis vectors: }\hat{i} \text{,} \hat{j}$$
 
-
-```{r echo = F}
-library(shiny)
-shiny::shinyApp(
-  
-  ui = fluidPage(
-    uiOutput("vector_basic_math_title"),
-    
-    fluidRow(
-      
-      column(width = 12,
-             imageOutput("vector_basic_gif")
-             
-      )
-    )
-  ),
-  
-  server = function(input, output) {
-    output$vector_basic_math_title <- renderUI(
-      
-      
-      h2(withMathJax(
-        "$$\\vec{v} \\text{ is the vector addition of the scaled basis vectors: }\\hat{i} \\text{,} \\hat{j}$$"
-      ))
-    )
-    
-    output$vector_basic_gif <- renderImage({list(src = paste0(path_to_gifs,"vector_basic.gif"),contentType = 'image/gif')},deleteFile = F)
-    
-    
-  },
-  
-  options = list(height = 600)
-)
+![](/img/gifs/vector_basic.gif)
 
 
-```
+
+
 
 ### Transformations
-```{r echo = F}
 
-shiny::shinyApp(
-  
-  ui = fluidPage(
-    fluidRow(
-      column(width = 12,
-             uiOutput("transformation_math_title")
-             
-      )
-    ),
-    fluidRow(
-      
-      column(width = 12,
-             imageOutput("transformation_gif")
-             
-      )
-    )
-    
-    
-  ),
-  
-  server = function(input, output) {
-    
-    output$transformation_math_title <- renderUI(
-      h2(withMathJax(
-        "$$\\vec{A} \\text{ is a transformation of space that moves its basis vectors } \\hat{i} \\text{ and } \\hat{j}$$"
-      ))
-    )
-    
-    output$transformation_gif <- renderImage({list(src = paste0(path_to_gifs,"transformation.gif"),contentType = 'image/gif')},deleteFile = F)
-    
-    
-    
-  },
-  
-  options = list(height = 600)
-)
+$$\vec{A} \text{ is a transformation of space that moves its basis vectors } \hat{i} \text{ and } \hat{j}$$
+![](/img/gifs/transformation.gif)
 
 
-```
 
 
 ### Matrix Multiplication
-```{r echo = F}
 
-shiny::shinyApp(
-  
-  ui = fluidPage(
-    fluidRow(
-      column(width = 12,
-             h2("Matrix Multiplication is just the composition of two transformations")
-             
-             
-      )
-    ),
-    fluidRow(
-      column(width = 6,
-             imageOutput("matrix_composition_gif")
-      ),
-      column(width = 6,
-             imageOutput("matrix_composition_gif2")
-      )
-    ),
-    br(),
-    br(),
-    br(),
-    br(),
-    fluidRow(
-      column(width = 6,
-             h2("The inverse of a matrix is just the transformation in reverse")
-             
-      )
-    ),    
-    fluidRow(
-      column(width = 6,
-             imageOutput("matrix_composition_inverse_gif")
-      ),
-      column(width = 6,
-             imageOutput("matrix_composition_inverse_gif2")
-      )
-    ),
-    br(),
-    br(),
-    br(),
-    br(),
-    fluidRow(
-      column(width = 6,
-             h2("The composition of a matrix and its inverse is itself")
-             
-      )
-    ),    
-    fluidRow(
-      column(width = 6,
-             imageOutput("matrix_composition_inverse_self_gif")
-      )
-      
-    )
-    
-    
-  ),
-  
-  server = function(input, output) {
-    
-    output$matrix_composition_gif <- renderImage({list(src = paste0(path_to_gifs,"matrix_composition_gif.gif"),contentType = 'image/gif')},deleteFile = F)
-    output$matrix_composition_gif2 <- renderImage({list(src = paste0(path_to_gifs,"matrix_composition_gif2.gif"),contentType = 'image/gif')},deleteFile = F)
-    
-    output$matrix_composition_inverse_gif <- renderImage({list(src = paste0(path_to_gifs,"matrix_composition_inverse_gif.gif"),contentType = 'image/gif')},deleteFile = F)
-    output$matrix_composition_inverse_gif2 <- renderImage({list(src = paste0(path_to_gifs,"matrix_composition_inverse_gif2.gif"),contentType = 'image/gif')},deleteFile = F)
-    
-    output$matrix_composition_inverse_self_gif <- renderImage({list(src = paste0(path_to_gifs,"matrix_composition_inverse_self_gif.gif"),contentType = 'image/gif')},deleteFile = F)
-    
-    
-  },
-  
-  options = list(height = 600)
-)
+Matrix Multiplication is just the composition of two transformations
+
+![](/img/gifs/matrix_composition_gif.gif)
+
+![](/img/gifs/matrix_composition_gif2.gif)
+![](/img/gifs/matrix_composition_inverse_gif.gif)
+![](/img/gifs/matrix_composition_inverse_gif2.gif)
+![](/img/gifs/matrix_composition_inverse_self_gif.gif)
 
 
-```
 
 
 ### Systems of Equations
-```{r echo = F}
 
-shiny::shinyApp(
-  
-  ui = fluidPage(
-    fluidRow(
-      column(
-        width = 12,
-        uiOutput("math_systems_intro")
-      )
+$$\text{For a system of equations}$$ 
+                $$\begin{align}
+                -3x_1 + 2x_2 & = -4   \\
+                2x_1 - 2x_2 & = 2
+                \end{align}
+                $$
+                $$\begin{align}
+                A\vec{x} & = \vec{b}  \\
+                \begin{bmatrix} -3  & 2 \\ 2  & -2 \end{bmatrix}
+                \begin{bmatrix} x_1  \\ x_2   \end{bmatrix} &= \begin{bmatrix} -4  \\ 2   \end{bmatrix}
+                \end{align} $$
       
-      
-    ),
-    fluidRow(
-      
-      column(width = 12,
-             imageOutput("systems_gif"),
-             imageOutput("systems_inverse_gif")
-             
-      )
-    ),
-    br(),
-    br(),
-    br(),
-    br(),
-    fluidRow(
-      column(width = 6,
-             uiOutput("math_systems_det_span"),
-             h3("show inverse A gif here")
-      )
-    ),
-    fluidRow(
-      column(width = 4,
-             imageOutput("systems_determinant_span_gif")
-      ),
-      column(width = 8,
-             uiOutput("math_systems_det_A")
-      )
-    ),
-    br(),
-    br(),
-    br(),
-    br(),
-    br(),
-    fluidRow(
-      column(width = 4,
-             imageOutput("systems_det_solutions_gif")
-      ),
-      column(width = 8,
-             uiOutput("math_systems_det_A2"),
-             h3("can't use inverse A because one point would go to multiple vectors")
-      )
-    )
-    
-    
-    
-  ),
-  
-  server = function(input, output) {
+  $$\text{The solution to the equation is the vector which after a transformation given by }A\text{, lands on }\begin{bmatrix} -4  \\ 2   \end{bmatrix} $$
+                
+$$ \text{Notice that for a transformation matrix }A\text{ whose determinant } = 0\text{, the spanned vectors collapse onto a line}$$
+$$A =  \begin{bmatrix} 1  & -2 \\ 2  & -4 \end{bmatrix} $$ 
+                
+$$\begin{align}\begin{vmatrix}A\end{vmatrix} &= (1 * -4) - (2 * -2) \\
+                & = 0
+                \end{align}$$
+                
+$$\text{If }A \text{ were part of a system of equations } A\vec{x} = \vec{b}  \text{,}$$$$\text{then the system only has a solution if }\vec{b} \text{ lies on the spanned line}$$
+              
+              
+              
+![](/img/gifs/systems.gif)
+![](/img/gifs/systems_inverse.gif)
 
-    output$math_systems_intro <- renderUI(
-      h3(withMathJax(
-        "$$\\text{For a system of equations}$$ 
-               $$\\begin{align}
-               -3x_1 + 2x_2 & = -4   \\\\
-               2x_1 - 2x_2 & = 2
-               \\end{align}
-               $$
-               $$\\begin{align}
-               A\\vec{x} & = \\vec{b}  \\\\
-               \\begin{bmatrix} -3  & 2 \\\\ 2  & -2 \\end{bmatrix}
-               \\begin{bmatrix} x_1  \\\\ x_2   \\end{bmatrix} &= \\begin{bmatrix} -4  \\\\ 2   \\end{bmatrix}
-               \\end{align} $$
-               $$$$
-               $$\\text{The solution to the equation is the vector which after a transformation given by }A\\text{, lands on }\\begin{bmatrix} -4  \\\\ 2   \\end{bmatrix} $$
-               "
-      ))
-    )
-        output$math_systems_det_span <- renderUI(
-      h3(withMathJax(
-        "$$ \\text{Notice that for a transformation matrix }A\\text{ whose determinant } = 0\\text{, the spanned vectors collapse onto a line}$$"
-      ))
-    )
-        
-                output$math_systems_det_A <- renderUI(
-      h3(withMathJax(
-        "$$A =  \\begin{bmatrix} 1  & -2 \\\\ 2  & -4 \\end{bmatrix} $$ 
-               $$$$
-               
-               $$\\begin{align}\\begin{vmatrix}A\\end{vmatrix} &= (1 * -4) - (2 * -2) \\\\
-               & = 0
-               \\end{align}$$
-               $$$$
-               $$\\text{If }A \\text{ were part of a system of equations } A\\vec{x} = \\vec{b}  \\text{,}$$$$\\text{then the system only has a solution if }\\vec{b} \\text{ lies
-               on the spanned line}$$"
-      ))
-    )
-    
-      output$systems_gif <- renderImage({list(src = paste0(path_to_gifs,"systems.gif"),contentType = 'image/gif')},deleteFile = F)
-
-      output$systems_inverse_gif <- renderImage({list(src = paste0(path_to_gifs,"systems_inverse.gif"),contentType = 'image/gif')},deleteFile = F)
-      output$systems_determinant_span_gif <- renderImage({list(src = paste0(path_to_gifs,"systems_det_span.gif"),contentType = 'image/gif')},deleteFile = F)
-
-            output$systems_det_solutions_gif <- renderImage({list(src = paste0(path_to_gifs,"systems_det_solutions.gif"),contentType = 'image/gif')},deleteFile = F)
-
-    
-    
-  },
-  
-  options = list(height = 600)
-)
-
-
-```
-
-
-To learn more, see [Interactive Documents](http://rmarkdown.rstudio.com/authoring_shiny.html).
+![](/img/gifs/systems_det_span.gif)
+![](/img/gifs/systems_det_solutions.gif)
 
 ### EigenVectors
+
+Eigenvectors are special vectors that only scale under a transformation
+
+$$
+                 A =  \begin{bmatrix} 1  & 1 \\ 2  & 3 \end{bmatrix}
+                $$
+                $$
+                 v_1 = \begin{bmatrix} -0.344  \\ -0.939  \end{bmatrix} ; \lambda_1 = 3.73
+                $$
+                $$
+                 v_2 = \begin{bmatrix} -0.807  \\ 0.591  \end{bmatrix} ; \lambda_2 = 0.27
+                $$
+
+![](/img/gifs/eigen_gif.gif)
+![](/img/gifs/eigen_lambda_gif.gif)
+
 ```{r echo = F}
-
-shiny::shinyApp(
-  
-  ui = fluidPage(
-      fluidRow(
-        column(
-          width = 12,
-          h2("Eigenvectors are special vectors that only scale under a transformation")
-        )
-      ),
-      fluidRow(
-        column(
-          width = 12,
-          uiOutput("math_eigen_intro")
-        )
-      ),
-      
-      fluidRow(
-        
-        column(width = 12,
-               imageOutput("eigen_gif")
-
-        )
-      ),
-      br(),
-      br(),
-      br(),
-      br(),
-      br(),
-      fluidRow(
-        
-        column(width = 12,
-               imageOutput("eigen_lambda_gif")
-               
-        )
-      )
-    
-    
-  ),
-  
-  server = function(input, output) {
-    
-    output$tmath_eigen_intro<- renderUI(
-      h2(withMathJax(
-        "$$
-                A =  \\begin{bmatrix} 1  & 1 \\\\ 2  & 3 \\end{bmatrix}
-               $$
-               $$
-                v_1 = \\begin{bmatrix} -0.344  \\\\ -0.939  \\end{bmatrix} ; \\lambda_1 = 3.73
-               $$
-               $$
-                v_2 = \\begin{bmatrix} -0.807  \\\\ 0.591  \\end{bmatrix} ; \\lambda_2 = 0.27
-               $$"
-      ))
-    )
-    
-      output$eigen_gif <- renderImage({list(src = paste0(path_to_gifs,"eigen_gif.gif"),contentType = 'image/gif')},deleteFile = F)
-      output$eigen_lambda_gif <- renderImage({list(src = paste0(path_to_gifs,"eigen_lambda_gif.gif"),contentType = 'image/gif')},deleteFile = F)
-
-    
-    
-  },
-  
-  options = list(height = 600)
-)
+# 
+# shiny::shinyApp(
+#   
+#   ui = fluidPage(
+#       fluidRow(
+#         column(
+#           width = 12,
+#           h2("Eigenvectors are special vectors that only scale under a transformation")
+#         )
+#       ),
+#       fluidRow(
+#         column(
+#           width = 12,
+#           uiOutput("math_eigen_intro")
+#         )
+#       ),
+#       
+#       fluidRow(
+#         
+#         column(width = 12,
+#                imageOutput("eigen_gif")
+# 
+#         )
+#       ),
+#       br(),
+#       br(),
+#       br(),
+#       br(),
+#       br(),
+#       fluidRow(
+#         
+#         column(width = 12,
+#                imageOutput("eigen_lambda_gif")
+#                
+#         )
+#       )
+#     
+#     
+#   ),
+#   
+#   server = function(input, output) {
+#     
+#     output$tmath_eigen_intro<- renderUI(
+#       h2(withMathJax(
+#         "$$
+#                 A =  \\begin{bmatrix} 1  & 1 \\\\ 2  & 3 \\end{bmatrix}
+#                $$
+#                $$
+#                 v_1 = \\begin{bmatrix} -0.344  \\\\ -0.939  \\end{bmatrix} ; \\lambda_1 = 3.73
+#                $$
+#                $$
+#                 v_2 = \\begin{bmatrix} -0.807  \\\\ 0.591  \\end{bmatrix} ; \\lambda_2 = 0.27
+#                $$"
+#       ))
+#     )
+#     
+#       output$eigen_gif <- renderImage({list(src = paste0(path_to_gifs,"eigen_gif.gif"),contentType = 'image/gif')},deleteFile = F)
+#       output$eigen_lambda_gif <- renderImage({list(src = paste0(path_to_gifs,"eigen_lambda_gif.gif"),contentType = 'image/gif')},deleteFile = F)
+# 
+#     
+#     
+#   },
+#   
+#   options = list(height = 600)
+# )
 
 
 ```
