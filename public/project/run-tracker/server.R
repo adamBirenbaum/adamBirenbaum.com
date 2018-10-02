@@ -1,6 +1,17 @@
 
 
-path_to_data <- ifelse(Sys.info()['nodename'] =="adamubuntu", "~/adambirenbaum.com/public/project/run-tracker/", "/var/www/adambirenbaum.com/public/project/run-tracker/")
+is_local <- ifelse(Sys.info()['nodename'] =="adamubuntu",T,F)
+
+path_to_data <- ifelse(is_local, "~/adambirenbaum.com/public/project/run-tracker/", "/var/www/adambirenbaum.com/public/project/run-tracker/")
+
+if (is_local){
+  today_date <- Sys.Date()
+}else{
+  time <- Sys.time()
+  time <- time - 3600*5
+  today_date <- as.Date(time)
+}
+
 
 server <- function(input,output){
   
