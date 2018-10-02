@@ -1,6 +1,8 @@
 ```{r echo = FALSE,message=FALSE,warning=FALSE}
 library(dplyr)
-path_to_recipe <- ifelse(Sys.info()['nodename'] =="DESKTOP-RFKFT3H", "D:/abire/Documents/recipes/", "/var/www/adambirenbaum.com/public/project/recipes/")
+
+
+path_to_recipe <<- ifelse(Sys.info()['nodename'] =="DESKTOP-RFKFT3H", "D:/abire/Documents/recipes/", ifelse(Sys.info()['nodename'] == "adamubuntu", "~/adambirenbaum.com/public/project/recipes/","/var/www/adambirenbaum.com/public/project/recipes/")  )
 
 recipe_database <- read.csv(paste0(path_to_recipe,"recipe_database.csv"),stringsAsFactors = F)
 recipe_database <- recipe_database[nrow(recipe_database),]
@@ -51,7 +53,7 @@ img <- recipe_database$Image
 
 img_files <- list.files(paste0(path_to_recipe,"img/"))
 img <- img_files[grepl(recipe_database$Name,x = img_files,fixed = T)]
-if (img != ""){
+if (length(img) != 0){
   img <- paste0(path_to_recipe,"img/",img)
   w <- noquote("400px")
 }else{
