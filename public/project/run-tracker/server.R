@@ -4,6 +4,7 @@ is_local <- ifelse(Sys.info()['nodename'] =="adamubuntu",T,F)
 
 path_to_data <- ifelse(is_local, "~/adambirenbaum.com/public/project/run-tracker/", "/var/www/adambirenbaum.com/public/project/run-tracker/")
 
+
 if (is_local){
   today_date <- Sys.Date()
 }else{
@@ -13,7 +14,11 @@ if (is_local){
 }
 
 
-server <- function(input,output){
+server <- function(input,output,session){
+  phrases <- c("You Go Girl!","Great Job!","Way to Go!","Hell Ya!","You are amazing!","Woohooo","Yahooo!","Frick Ya!","Nice Work","Well Done!","Super Job!","Holy Cats!","Hod Dog, you are incredible!","Glory Hallelujah you are amaizng",
+               "Out of Sight!","Good Golly!","JEEMINY CHRISTMAS!")
+  
+  
   
   output$plot <- renderPlot({
     miles_df <- read.csv(paste0(path_to_data,"total_miles.csv"),stringsAsFactors = F,colClasses = c("Date","numeric","numeric","numeric"))
@@ -73,6 +78,7 @@ server <- function(input,output){
       
     })
     
+    shinyWidgets::sendSweetAlert(session = session, title = NULL,text = tags$span(tags$br(),tags$br(),tags$h2(sample(phrases,size = 1))), type = "success")
     
   })
   
