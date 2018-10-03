@@ -15,7 +15,7 @@ if (is_local){
 
 
 server <- function(input,output,session){
-  phrases <- c("You Go Girl!","Great Job!","Way to Go!","Hell Ya!","You are amazing!","Woohooo","Yahooo!","Frick Ya!","Nice Work","Well Done!","Super Job!","Holy Cats!","Hod Dog, you are incredible!","Glory Hallelujah you are amaizng",
+  phrases <- c("You Go Girl!","Great Job!","Way to Go!","Hell Ya!","You are amazing!","Woohooo","Yahooo!","Frick Ya!","Nice Work","Well Done!","Super Job!","Holy Cats!","Hod Dog, you are incredible!","Glory Hallelujah you are amazing!",
                "Out of Sight!","Good Golly!","JEEMINY CHRISTMAS!")
   
   
@@ -23,7 +23,7 @@ server <- function(input,output,session){
   output$plot <- renderPlot({
     miles_df <- read.csv(paste0(path_to_data,"total_miles.csv"),stringsAsFactors = F,colClasses = c("Date","numeric","numeric","numeric"))
     
-    miles_df <- miles_df %>% filter(Date <= Sys.Date()) %>% mutate(Bo = cumsum(Bo),
+    miles_df <- miles_df %>% filter(Date <= today_date) %>% mutate(Bo = cumsum(Bo),
                                                                    Rachael= cumsum(Rachael),
                                                                    Adam = cumsum(Adam)) %>% 
       gather(key = "Person",value = "Miles",Bo,Rachael,Adam)
@@ -34,7 +34,7 @@ server <- function(input,output,session){
   
   output$table <- renderTable({
     miles_df <- read.csv(paste0(path_to_data,"total_miles.csv"),stringsAsFactors = F,colClasses = c("Date","numeric","numeric","numeric"))
-    miles_df <- miles_df %>% filter(Date <= Sys.Date()) 
+    miles_df <- miles_df %>% filter(Date <= today_date) 
     num_days <- nrow(miles_df) - 1
     table_df <- data.frame(Runner = c("Bo","Rachael","Adam"), "Total Miles" = c(sum(miles_df$Bo),sum(miles_df$Rachael), sum(miles_df$Adam)))
     table_df <- table_df %>% mutate("Miles/Day" = Total.Miles/num_days)
@@ -50,13 +50,13 @@ server <- function(input,output,session){
     miles_df <- read.csv(paste0(path_to_data,"total_miles.csv"),stringsAsFactors = F,colClasses = c("Date","numeric","numeric","numeric"))
     
 
-    miles_df[[input$person]][miles_df$Date == Sys.Date()] <- input$miles +   miles_df[[input$person]][miles_df$Date == Sys.Date()]
+    miles_df[[input$person]][miles_df$Date == today_date] <- input$miles +   miles_df[[input$person]][miles_df$Date == today_date]
     
     
     write.csv(miles_df,paste0(path_to_data,"total_miles.csv"),row.names = F)
     output$plot <- renderPlot({
 
-      miles_df <- miles_df %>% filter(Date <= Sys.Date()) %>% mutate(Bo = cumsum(Bo),
+      miles_df <- miles_df %>% filter(Date <= today_date) %>% mutate(Bo = cumsum(Bo),
                                                                      Rachael= cumsum(Rachael),
                                                                      Adam = cumsum(Adam)) %>% 
         gather(key = "Person",value = "Miles",Bo,Rachael,Adam)
@@ -67,7 +67,7 @@ server <- function(input,output,session){
     
     output$table <- renderTable({
       miles_df <- read.csv(paste0(path_to_data,"total_miles.csv"),stringsAsFactors = F,colClasses = c("Date","numeric","numeric","numeric"))
-      miles_df <- miles_df %>% filter(Date <= Sys.Date()) 
+      miles_df <- miles_df %>% filter(Date <= today_date) 
       num_days <- nrow(miles_df) - 1
       table_df <- data.frame(Runner = c("Bo","Rachael","Adam"), "Total Miles" = c(sum(miles_df$Bo),sum(miles_df$Rachael), sum(miles_df$Adam)))
       table_df <- table_df %>% mutate("Miles/Day" = Total.Miles/num_days)
