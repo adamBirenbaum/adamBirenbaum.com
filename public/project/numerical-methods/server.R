@@ -14,8 +14,9 @@ server <- function(input, output,session = session) {
     sliderInput("guess2","Guess", min = input$xrange[1],max = input$xrange[2],step = 0.25, value = mean(input$xrange))
     
   })
+  
 
-
+  
   math_fun <- c("sin","cos","tan","sqrt","exp","log")
   math_op <- c("+","-","*","/","^")
   math_nums <- seq(from = -10, 10, length.out = 41)[-21]
@@ -81,12 +82,12 @@ server <- function(input, output,session = session) {
     
     
   }
-
+  
   observeEvent(input$random_function,{
     updateTextInput(session = session,"roots_function","f(x)",value = random_fun("",0))
-
-
-
+    
+    
+    
     
   })
   
@@ -95,8 +96,11 @@ server <- function(input, output,session = session) {
   
   roots_function <- reactive(input$roots_function)
   integration_function <- reactive(input$integration_function)
+  derivative_function <- reactive(input$derivative_function)
+  
   xrange <- reactive(input$xrange)
   integration_xrange <- reactive(input$integration_xrange)
+  derivative_xrange <- reactive(input$derivative_xrange)
   n <- reactive(input$niter)
   guess <- reactive(input$guess)
   
@@ -117,6 +121,25 @@ server <- function(input, output,session = session) {
     
     
   }
+  
+  safely_get_fx_from_dx <- function(f_string,xrange,dx){
+    x <- seq(from = xrange[1], to = xrange[2], by = dx)
+    error_check <- try(eval(parse(text = f_string)),silent = T)
+    error_check2 <- try(as.numeric(error_check),silent = T)
+    if (is_error(error_check) | is_error(error_check2)){
+      return(NULL)
+    }else{
+      x <- seq(from = xrange[1], to = xrange[2], by = dx)
+      
+      
+      y <- eval(parse(text = f_string))
+      data.frame(x = x, y = y)
+    }
+    
+    
+  }
+  
+  
   
   ranges <- reactiveValues(x = NULL, y = NULL)
   
@@ -144,15 +167,37 @@ server <- function(input, output,session = session) {
     }
   })
   
+  observeEvent(input$derivative_plot_dblclick, {
+    brush <- input$derivative_plot_brush
+    if (!is.null(brush)) {
+      ranges$x <- c(brush$xmin, brush$xmax)
+      ranges$y <- c(brush$ymin, brush$ymax)
+      
+    } else {
+      ranges$x <- NULL
+      ranges$y <- NULL
+    }
+  })
   
-
-
+  observeEvent(input$system_plot_dblclick, {
+    brush <- input$system_plot_brush
+    if (!is.null(brush)) {
+      ranges$x <- c(brush$xmin, brush$xmax)
+      ranges$y <- c(brush$ymin, brush$ymax)
+      
+    } else {
+      ranges$x <- NULL
+      ranges$y <- NULL
+    }
+  })
+  
+  
   convert_string_to_latex <- function(x,f){
-  #x <- "exp(-x)*cos(x)*sin*(3*x)*sqrt(2)"  
-  x <- gsub("exp\\(([^)]+)\\)","e^{\\1}",x) 
-  x <- gsub("*","",x,fixed = T)
-  x <- paste0(f,"(x) = ",x)
-  x
+    #x <- "exp(-x)*cos(x)*sin*(3*x)*sqrt(2)"  
+    x <- gsub("exp\\(([^)]+)\\)","e^{\\1}",x) 
+    x <- gsub("*","",x,fixed = T)
+    x <- paste0(f,"(x) = ",x)
+    x
   }
   
   get_y_value_from_x <- function(x,f_string){
@@ -160,7 +205,15 @@ server <- function(input, output,session = session) {
     
   }
   
-  get_newton_output <- function(){
+  get_deriv_of_point <- function(x,f_string){
+    ff <- parse(text = f_string)
+    dd <- deriv(ff,"x")
+    dd <- eval(dd)
+    as.numeric(attributes(dd)$gradient)
+
+    
+  }
+   get_newton_output <- function(){
     
     d_function <- safely_get_fx_df(roots_function(),xrange())
     if (!is.null(d_function)){
@@ -171,7 +224,7 @@ server <- function(input, output,session = session) {
       
       x_root_vec <- x
       for (i in 1:n()){
-
+        
         if(is.null(x)) x <- 0
         y_at_root <- eval(parse(text = newton_function_string))
         deriv_at_root <- eval(D(parse(text = newton_function_string),"x"))
@@ -194,23 +247,23 @@ server <- function(input, output,session = session) {
       
       newton_segments_df <- rbind(newton_segments_df, newton_slope_df)
       
-     
+      
       g <-  ggplot(data = d_function, aes(x = x, y=y)) + geom_line(size = 2) + 
         geom_label(data = roots_label_df, aes(x =x, y =y, label = text,fill = factor(text)),  fontface = "bold",size = 8) + 
         geom_segment(data = newton_segments_df,aes(x = x, y = y, xend = xend, yend = yend),linetype = 2) + 
         scale_fill_brewer(palette ="Blues") + guides(fill=FALSE) + geom_hline(yintercept = 0)+geom_vline(xintercept = 0)+ ylim(input$yrange[1],input$yrange[2]) + 
         coord_cartesian(xlim = ranges$x, ylim = ranges$y) + 
         ylab("f(x)") + ggtitle(TeX(convert_string_to_latex(newton_function_string,"f"))) + theme(axis.text = element_text(size = rel(1.5)),
-                                                                                             title = element_text(size = rel(3))) 
+                                                                                                 title = element_text(size = rel(3))) 
       
       
       roots_table_df <- roots_label_df[,c(1,2)]
       names(roots_table_df) <- c("x","y")
       roots_table_df$y <- get_y_value_from_x(roots_table_df$x,newton_function_string)
       
-
       
-
+      
+      
     }else{
       g <- NULL
       roots_table_df <- NULL
@@ -250,7 +303,7 @@ server <- function(input, output,session = session) {
           break
         }
       }
-    
+      
       bisect_arrows_df <- data.frame(x = numeric(0),xend = numeric(0), y = numeric(0), yend = numeric(0))
       for (i in 1:(length(start_vec) - 1)){
         if (start_vec[i + 1] == start_vec[i]){
@@ -264,7 +317,7 @@ server <- function(input, output,session = session) {
         
       }
       
-    
+      
       bisect_arrows_df$y2 <- 0
       #bisect_vert_line_df <- bisect_arrows_df
       # for (i in 1:(nrow(bisect_vert_line_df) - 1)){
@@ -280,7 +333,7 @@ server <- function(input, output,session = session) {
       roots_label_df <- data.frame(x = x_root_vec,y = 0,text = 1:length(x_root_vec))
       start_end_df <- data.frame(x = c(as.numeric(input$bisect_start),as.numeric(input$bisect_end)), y = 0)
       
-  
+      
       g <-  ggplot(data = d_function, aes(x = x, y=y)) + geom_line(size = 2) + 
         geom_label(data = roots_label_df, aes(x =x, y =y, label = text,fill = factor(text)),  fontface = "bold",size = 8) +
         geom_segment(data = bisect_arrows_df, aes(x = x, y = y, xend = xend, yend = yend),arrow = arrow(angle = 15),size = 2)+
@@ -290,7 +343,7 @@ server <- function(input, output,session = session) {
         scale_fill_brewer(palette ="Blues",direction = -1) + guides(fill=FALSE) + geom_hline(yintercept = 0)+geom_vline(xintercept = 0)+ ylim(input$yrange[1],input$yrange[2]) + 
         coord_cartesian(xlim = ranges$x, ylim = ranges$y) + 
         ylab("f(x)") + ggtitle(TeX(convert_string_to_latex(roots_function(),"f"))) + theme(axis.text = element_text(size = rel(1.5)),
-                                                                                             title = element_text(size = rel(3))) 
+                                                                                           title = element_text(size = rel(3))) 
       
       
       
@@ -305,7 +358,7 @@ server <- function(input, output,session = session) {
     return(list(plot = g, table = roots_table_df))
   }
   
-
+  
   get_fixed_point_output <- function(){
     d_function <- safely_get_fx_df(roots_function(),xrange())
     if (!is.null(d_function)){
@@ -315,7 +368,7 @@ server <- function(input, output,session = session) {
       x_string <- "x"
       x_df <- safely_get_fx_df(x_string,xrange())
       
-  
+      
       initial_guess <- input$guess2
       if (is.null(initial_guess)){
         initial_guess <- 0
@@ -348,7 +401,7 @@ server <- function(input, output,session = session) {
         
       }
       
-
+      
       g <-  ggplot(data = gx_df, aes(x = x, y=y)) + geom_line(size = 2) + 
         geom_label(data = roots_label_df, aes(x =x, y =y, label = text,fill = factor(text)),  fontface = "bold",size = 8) +
         geom_line(data = x_df, aes(x = x, y=y),size = 1)+
@@ -357,13 +410,13 @@ server <- function(input, output,session = session) {
         ylim(input$yrange[1],input$yrange[2]) + scale_fill_brewer(palette ="Blues",direction = -1) + guides(fill=FALSE) +
         coord_cartesian(xlim = ranges$x, ylim = ranges$y) + 
         ylab("f(x)") + ggtitle(TeX(convert_string_to_latex(gx_string,"g"))) + theme(axis.text = element_text(size = rel(1.5)),
-                                                                                       title = element_text(size = rel(3))) 
+                                                                                    title = element_text(size = rel(3))) 
       
       roots_table_df <- roots_label_df[,c(1,2)]
       names(roots_table_df) <- c("x","y")
       roots_table_df$y <- get_y_value_from_x(roots_table_df$x,roots_function())
       
-      }else{
+    }else{
       g <- NULL
       roots_table_df <- NULL
     }
@@ -375,8 +428,8 @@ server <- function(input, output,session = session) {
   
   
   output$plot <- renderPlot({
-
-
+    
+    
     #der <- eval(D(parse(text = y_at_point_string),"x_point"))
     #d$y2 <-der
     if (input$roots_tabset == "Newton-Raphson"){
@@ -396,7 +449,7 @@ server <- function(input, output,session = session) {
     root_table <- plot_and_roots_table$table
     
     gplot <- plot_and_roots_table$plot
- 
+    
     if (!is.null(gplot)){
       output$roots_df <- renderTable(root_table,digits = 4,rownames = T)
       return(gplot)
@@ -406,7 +459,7 @@ server <- function(input, output,session = session) {
     
     
     
-
+    
     #plot_ly(d, x = ~x, y = ~y,type = 'scatter',mode = "lines") %>% add_trace(x = ~root, y = ~y_root,mode = "markers")
   })
   
@@ -427,36 +480,36 @@ server <- function(input, output,session = session) {
     
     d_function <- safely_get_fx_df(integration_function(),integration_xrange())
     if (!is.null(d_function)){
-    lower <- as.numeric(input$trapezoidal_lower_bound)
-    upper <- as.numeric(input$trapezoidal_upper_bound)
-    trapezoid_x_values <- seq(from = lower, to = upper, length.out = input$integration_nsubsets + 1)
-    trapezoid_y_values <- sapply(trapezoid_x_values, get_y_value_from_x, f_string = input$integration_function)
-    trapezoid_df <- data.frame(x = trapezoid_x_values, y = trapezoid_y_values)
-    vline_df <- data.frame(x = trapezoid_x_values, xend = trapezoid_x_values, y = 0, yend = trapezoid_y_values)
-    g <- ggplot(trapezoid_df, aes(x = x, y =y )) + geom_point(color = "red") + geom_area(linetype = 2,color = "red",fill = "indianred1",alpha = .6) + geom_line(data = d_function, aes(x = x, y = y),size = 2) +
-      geom_segment(data = vline_df, aes(x = x, xend = xend, y =y , yend = yend),linetype = 2, color = "red4",size = 1) +
-      geom_hline(yintercept = 0)+geom_vline(xintercept = 0)+
-      ylim(input$integration_yrange[1],input$integration_yrange[2]) + coord_cartesian(xlim = ranges$x, ylim = ranges$y) + 
-      ylab("f(x)") + ggtitle(TeX(convert_string_to_latex(integration_function(),"f"))) + theme(axis.text = element_text(size = rel(1.5)),
-                                                                                  title = element_text(size = rel(3))) 
-    
+      lower <- as.numeric(input$trapezoidal_lower_bound)
+      upper <- as.numeric(input$trapezoidal_upper_bound)
+      trapezoid_x_values <- seq(from = lower, to = upper, length.out = input$integration_nsubsets + 1)
+      trapezoid_y_values <- sapply(trapezoid_x_values, get_y_value_from_x, f_string = input$integration_function)
+      trapezoid_df <- data.frame(x = trapezoid_x_values, y = trapezoid_y_values)
+      vline_df <- data.frame(x = trapezoid_x_values, xend = trapezoid_x_values, y = 0, yend = trapezoid_y_values)
+      g <- ggplot(trapezoid_df, aes(x = x, y =y )) + geom_point(color = "red") + geom_area(linetype = 2,color = "red",fill = "indianred1",alpha = .6) + geom_line(data = d_function, aes(x = x, y = y),size = 2) +
+        geom_segment(data = vline_df, aes(x = x, xend = xend, y =y , yend = yend),linetype = 2, color = "red4",size = 1) +
+        geom_hline(yintercept = 0)+geom_vline(xintercept = 0)+
+        ylim(input$integration_yrange[1],input$integration_yrange[2]) + coord_cartesian(xlim = ranges$x, ylim = ranges$y) + 
+        ylab("f(x)") + ggtitle(TeX(convert_string_to_latex(integration_function(),"f"))) + theme(axis.text = element_text(size = rel(1.5)),
+                                                                                                 title = element_text(size = rel(3))) 
+      
       g$layers <- g$layers[c(3,1,2,4,5,6)]
       
-    delta_x <- (as.numeric(input$trapezoidal_upper_bound) - as.numeric(input$trapezoidal_lower_bound)) / input$integration_nsubsets
-    integral_approx <- 0
-    for (i in 1:input$integration_nsubsets){
-      integral_approx  <- integral_approx + delta_x * ((trapezoid_y_values[i] + trapezoid_y_values[i + 1])/2)
-    }
-
-    integral_actual <- string_integrate(integration_function(),lower,upper)
- 
-    integral_error <- paste0(round(abs((integral_actual - integral_approx)/integral_actual) * 100,2),"%") 
-    
-    integral_actual <- integral_actual %>% round(4) %>% as.character()
-    integral_approx <- integral_approx %>% round(4) %>% as.character()
-    summary_df <- data.frame(a = c("Composite Trapezoid Approximation", "Actual Integral","Error"),b = c(integral_approx,integral_actual,integral_error),stringsAsFactors = F)
-    
-   
+      delta_x <- (as.numeric(input$trapezoidal_upper_bound) - as.numeric(input$trapezoidal_lower_bound)) / input$integration_nsubsets
+      integral_approx <- 0
+      for (i in 1:input$integration_nsubsets){
+        integral_approx  <- integral_approx + delta_x * ((trapezoid_y_values[i] + trapezoid_y_values[i + 1])/2)
+      }
+      
+      integral_actual <- string_integrate(integration_function(),lower,upper)
+      
+      integral_error <- paste0(round(abs((integral_actual - integral_approx)/integral_actual) * 100,2),"%") 
+      
+      integral_actual <- integral_actual %>% round(4) %>% as.character()
+      integral_approx <- integral_approx %>% round(4) %>% as.character()
+      summary_df <- data.frame(a = c("Composite Trapezoid Approximation", "Actual Integral","Error"),b = c(integral_approx,integral_actual,integral_error),stringsAsFactors = F)
+      
+      
     }else{
       g <- NULL
       summary_df <- NULL
@@ -492,8 +545,8 @@ server <- function(input, output,session = session) {
     x <- seq(from = x0, to = x2, length.out = 50)
     
     parab_f <- "(x-x1)*(x-x2)/((x0-x1)*(x0-x2))*fx0 + (x-x0)*(x-x2)/((x1-x0)*(x1-x2))*fx1 + (x-x0)*(x-x1)/((x2-x0)*(x2-x1))*fx2"
-  y <- eval(parse(text = parab_f))
-  d <- data.frame(x = x, y = y)
+    y <- eval(parse(text = parab_f))
+    d <- data.frame(x = x, y = y)
     geom_area(data = d,aes(x = x, y = y),linetype = "dashed",fill= color_var,alpha = .5)
   }
   
@@ -504,7 +557,7 @@ server <- function(input, output,session = session) {
   get_simpsons_one_third_output <- function(){
     d_function <- safely_get_fx_df(integration_function(),integration_xrange())
     if (!is.null(d_function)){
- 
+      
       a <- as.numeric(input$simpson_third_lower_bound)
       b <- as.numeric(input$simpson_third_upper_bound)
       nn <- input$simpson_integration_subsets
@@ -513,7 +566,7 @@ server <- function(input, output,session = session) {
       x_range <- seq(from = a, to = b, length.out = nn + 1)
       
       parab_list <- list()
-    
+      
       for (i in 1:nn){
         x0 <- x_range[i]
         x2 <- x_range[i + 1]
@@ -533,7 +586,7 @@ server <- function(input, output,session = session) {
         geom_point(data = points_df, aes(x = x, y = y), size = 3)  + geom_hline(yintercept = 0)+geom_vline(xintercept = 0)+
         coord_cartesian(xlim = ranges$x, ylim = ranges$y) + 
         ylab("f(x)") + ggtitle(TeX(convert_string_to_latex(ff,"f"))) + theme(axis.text = element_text(size = rel(1.5)),
-                                                                                                 title = element_text(size = rel(3))) 
+                                                                             title = element_text(size = rel(3))) 
       
       
       
@@ -541,13 +594,13 @@ server <- function(input, output,session = session) {
       middle_vals <- all_x_points[(1:nn) * 2]
       end_vals <- x_range[c(-1,-(nn+1))]
       integral_approx <- (b-a) * (eval_function_at_x(ff,a) + 4 * sum(sapply(middle_vals,eval_function_at_x,f = ff)) + 2 * sum(sapply(end_vals,eval_function_at_x,f = ff)) + eval_function_at_x(ff,b)) / (6*nn)
-   
+      
       integral_error <- paste0(round(abs((integral_actual - integral_approx)/integral_actual) * 100,2),"%") 
       
       integral_actual <- integral_actual %>% round(4) %>% as.character()
       integral_approx <- integral_approx %>% round(4) %>% as.character()
       summary_df <- data.frame(a = c("Simpson's 1/3 Approximation", "Actual Integral","Error"),b = c(integral_approx,integral_actual,integral_error),stringsAsFactors = F)
-
+      
       
     }else{
       g <- NULL
@@ -555,14 +608,14 @@ server <- function(input, output,session = session) {
     }
     
     return(list(plot = g, table = summary_df))
-      
+    
   }
   
   
   output$integration_plot <- renderPlot({
     
     if (input$integration_tabset == "Trapezoidal"){
-    
+      
       plot_and_summary_table <- get_trapezoidal_output()
       
       
@@ -578,6 +631,166 @@ server <- function(input, output,session = session) {
     
     if (!is.null(gplot)){
       output$integration_summary_df <- renderTable(summary_table,colnames = F)
+      return(gplot)
+    }else{
+      return(NULL)
+    }
+    
+    
+
+  })
+  
+  output$ui_derivative_point <- renderUI({
+    sliderInput("derivative_point",label = "Point",min = min(input$derivative_xrange),max = max(input$derivative_xrange), step = input$derivaitve_dx, value = mean(c(input$derivative_xrange)))
+    
+  })
+  
+  get_derivative_output <- function(){
+
+    
+    d_function <- safely_get_fx_from_dx(derivative_function(),derivative_xrange(),input$derivaitve_dx)
+    
+    if (!is.null(d_function)){
+      
+      if (is.null(input$derivative_point)){
+        point <- mean(c(input$derivative_xrange,input$derivative_yrange))
+      }else{
+        point <- input$derivative_point
+      }
+      
+      dx <- input$derivaitve_dx
+      
+      y <- get_y_value_from_x(point,derivative_function())
+      if (input$derivative_type == "Forward"){
+        y1 <- get_y_value_from_x(point + dx,derivative_function())
+        slope <- (y1 - y)/dx
+        
+        deriv_y <- c(y, y1)
+        deriv_x <- c(point, point + dx)
+      }else if (input$derivative_type == "Backward"){
+        y0 <- get_y_value_from_x(point - dx,derivative_function())
+        slope <- (y - y0)/dx
+        
+        deriv_y <- c(y0, y)
+        deriv_x <- c(point - dx, point)
+      }else{
+        y0 <- get_y_value_from_x(point - dx,derivative_function())
+        y1 <- get_y_value_from_x(point + dx,derivative_function())
+        slope <- (y1 - y0)/(2*dx)
+        
+        deriv_y <- c(y0, y1)
+        deriv_x <- c(point - dx, point + dx)
+      }
+      
+      interc <- (y - slope * point)
+      point_df <- data.frame(x = point, y = y)
+      deriv_points_df <- data.frame(x = deriv_x, y = deriv_y)
+      
+      actual_slope <- get_deriv_of_point(point,derivative_function())
+      actual_interc <- (y - actual_slope * point)
+      
+      slope_error <- paste0(round(abs((actual_slope - slope)/actual_slope) * 100,2),"%") 
+      
+      g <- ggplot(data = d_function, aes(x = x, y = y)) + geom_point() +geom_abline(slope = slope, intercept = interc,color = "red") + 
+        geom_abline(slope = actual_slope, intercept = actual_interc) + 
+        geom_point(data = point_df, aes(x = x, y =y ), size = 3, color = "red") + geom_point(data = deriv_points_df, aes(x = x, y= y), size =1.5, color = "blue") +
+        coord_cartesian(xlim = ranges$x, ylim = ranges$y) + 
+        ylab("f(x)") + ggtitle(TeX(convert_string_to_latex(derivative_function(),"f"))) + theme(axis.text = element_text(size = rel(1.5)),
+                                                                                                 title = element_text(size = rel(3))) 
+      
+      
+      summary_df <- data.frame(a = c("Estimated Derivative", "Actual Derivative","Error"),b = c(slope,actual_slope,slope_error),stringsAsFactors = F)
+      
+      
+      
+    }else{
+      g <- NULL
+      summary_df <- NULL
+    }
+    
+    return(list(plot = g, table = summary_df))
+    
+  }
+  
+  output$derivative_plot <- renderPlot({
+
+      plot_and_summary_table <- get_derivative_output()
+      
+
+    summary_table <- plot_and_summary_table$table
+    
+    gplot <- plot_and_summary_table$plot
+    
+    if (!is.null(gplot)){
+      output$derivative_summary_df <- renderTable(summary_table,colnames = F)
+      return(gplot)
+    }else{
+      return(NULL)
+    }
+    
+  })
+  
+  output$system_matrix <- renderUI({
+    withMathJax(
+      h3(paste0("$$\\begin{align} \\vec{A}\\vec{x} & = \\vec{b} \\\\ ",
+                "\\begin{bmatrix}", input$sys_11 ,"&& ", input$sys_12 ,"\\\\",
+                input$sys_21,"&&", input$sys_22 ,"\\end{bmatrix} \\vec{x} &= \\begin{bmatrix}",
+                input$sys_13,"\\\\",input$sys_23,"\\end{bmatrix} \\end{align} $$"))
+    )
+
+  })
+
+  get_system_output <- function(){
+
+    
+    A <- matrix(c(as.numeric(input$sys_11),as.numeric(input$sys_21),as.numeric(input$sys_12),as.numeric(input$sys_22)),nrow = 2)
+    b <- matrix(c(as.numeric(input$sys_13),as.numeric(input$sys_23)),nrow = 2)
+    L <- A
+    L[upper.tri(A)] <- 0
+    U <- A
+    U[lower.tri(A,diag = T)] <- 0
+    TT <- -1 * solve(L) %*% U
+    CC <- solve(L) %*% b
+    
+    guess_df <- data.frame(x = as.numeric(input$sys_guess_1),y = as.numeric(input$sys_guess_2))
+    old_x <- matrix(c(as.numeric(input$sys_guess_1),as.numeric(input$sys_guess_2)),nrow = 2)
+    for (i in 1:input$systems_nguesses){
+      new_x <- TT %*% old_x  + CC
+      old_x <- new_x
+      guess_df <- rbind(guess_df,data.frame(x = new_x[1,1],y = new_x[2,1]))
+    }
+    
+    summary_df <- guess_df
+    
+    slope1 <- (- A[1,1]) / A[1,2]
+    slope2 <- (- A[2,1]) / A[2,2]
+    int1 <- b[1,1] / A[1,2]
+    int2 <- b[2,1] / A[2,2]
+    
+   
+    
+    guess_df$label <- 0:input$systems_nguesses
+    g <- ggplot(guess_df, aes(x = x, y =y, label = label )) + geom_abline(slope = c(slope1,slope2), intercept = c(int1,int2),size = 2) + geom_label(size = 8,fontface = "bold") +
+      coord_cartesian(xlim = ranges$x, ylim = ranges$y) + 
+      ylab("f(x)") + ggtitle("Gauss-Seidel") + theme(axis.text = element_text(size = rel(1.5)),title = element_text(size = rel(3))) +
+       geom_hline(yintercept = 0)+geom_vline(xintercept = 0)
+
+    return(list(plot = g, table = summary_df))
+    
+    
+  }
+  
+  output$system_plot <- renderPlot({
+    
+    plot_and_summary_table <- get_system_output()
+    
+    
+    summary_table <- plot_and_summary_table$table
+    
+    gplot <- plot_and_summary_table$plot
+    
+    if (!is.null(gplot)){
+      output$system_summary_df <- renderTable(summary_table,colnames = T,rownames = T,digits = 6)
       return(gplot)
     }else{
       return(NULL)
