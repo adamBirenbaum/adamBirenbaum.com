@@ -770,7 +770,7 @@ server <- function(input, output,session = session) {
    
     
     guess_df$label <- 0:input$systems_nguesses
-    g <- ggplot(guess_df, aes(x = x, y =y, label = label )) + geom_abline(slope = c(slope1,slope2), intercept = c(int1,int2),size = 2) + geom_label(size = 8,fontface = "bold") +
+    g <- ggplot(guess_df, aes(x = x, y =y, label = label )) + geom_abline(slope = c(slope1,slope2), intercept = c(int1,int2),size = 2) + geom_label(size = 8,fontface = "bold",color = "black",fill ="yellow") +
       coord_cartesian(xlim = ranges$x, ylim = ranges$y) + 
       ylab("f(x)") + ggtitle("Gauss-Seidel") + theme(axis.text = element_text(size = rel(1.5)),title = element_text(size = rel(3))) +
        geom_hline(yintercept = 0)+geom_vline(xintercept = 0)
