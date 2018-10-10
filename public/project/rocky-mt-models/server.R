@@ -166,7 +166,7 @@ server <- function(input, output,session) {
  
  observeEvent(input$make_3d,{
 
-   
+   try(rgl.close())
    limits <- get_limits(input$brush)
    
    m <- filter_region_df(correct_region, limits)
@@ -177,13 +177,16 @@ server <- function(input, output,session) {
    m <- m %*% rev_m
    calc_zscale <- calculate_zscale(m, limits)
   
-   m %>% sphere_shade(texture = "desert") %>%
-     add_shadow(ray_shade(m,zscale = calc_zscale)) %>% 
-     add_shadow(ambient_shade(m,zscale = calc_zscale)) %>% 
-     #add_water(detect_water(m,zscale = calc_zscale,cutoff = .99),color = "desert") %>% 
-     plot_3d(m,zscale = calc_zscale) 
+
    
    output$threed_map <- renderRglwidget({
+     
+     m %>% sphere_shade(texture = "desert") %>%
+       #add_shadow(ray_shade(m,zscale = calc_zscale)) %>% 
+       
+       #add_shadow(ambient_shade(m,zscale = calc_zscale)) %>% 
+       #add_water(detect_water(m,zscale = calc_zscale,cutoff = .99),color = "desert") %>% 
+       plot_3d(m,zscale = calc_zscale) 
      rglwidget()
 
      
