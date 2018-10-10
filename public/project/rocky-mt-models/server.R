@@ -1,5 +1,5 @@
 
-path_to_directory <- "/var/www/adambirenbaum.com/public/project/rocky-mt-models/data_files/"
+path_to_directory <- "/var/www/adambirenbaum.com/public/project/rocky-mt-models/"
 
 server <- function(input, output,session) {
   region_df <<- read.csv(paste0(path_to_directory,"data_coordinates_long.csv"),stringsAsFactors = F)
