@@ -6,10 +6,10 @@ date = 2016-04-27T00:00:00
 title = "Rocky Mountain Models"
 
 # Project summary to display on homepage.
-summary = "Create 3D printable models of a region in the Rocky's"
+summary = "Create 3D printable models of a user-defined region in the Rocky's."
 
 # Optional image to display on homepage (relative to `static/img/` folder).
-image_preview = "orbital-elements.png"
+image_preview = "rocky-mt-model.png"
 
 # Tags: can be used for filtering projects.
 # Example: `tags = ["machine-learning", "deep-learning"]`

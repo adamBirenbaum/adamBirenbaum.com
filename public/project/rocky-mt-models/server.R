@@ -87,7 +87,7 @@ server <- function(input, output,session) {
     
     output$map <- renderPlot({
       gmap + geom_polygon(data = region_df,aes(x = long, y = lat,group = factor(id)),alpha = 0,color = "black") +
-        geom_segment(data = states_df,aes(x = x, xend = xend, y = y ,yend = yend), color = "red",size = 2)
+        geom_segment(data = states_df,aes(x = x, xend = xend, y = y ,yend = yend), color = "red",size = 2)+ xlab("Longitude") + ylab("Latitude")
       
     })
 
@@ -108,7 +108,7 @@ server <- function(input, output,session) {
    
    
      gmap + geom_polygon(data = region_df,aes(x = long, y = lat,group = factor(id)),alpha = 0,color = "black") +
-   geom_segment(data = states_df,aes(x = x, xend = xend, y = y ,yend = yend), color = "red",size = 2)
+   geom_segment(data = states_df,aes(x = x, xend = xend, y = y ,yend = yend), color = "red",size = 2)+ xlab("Longitude") + ylab("Latitude")
  })
    
   
@@ -135,7 +135,7 @@ server <- function(input, output,session) {
    gmap  <<- get_map_safely(new_bbox,zoom = 10,maptype = "terrain") 
    gmap <<- ggmap(gmap)
    output$map <- renderPlot(
-     gmap +    geom_polygon(data = final_region,aes(x = long, y = lat,group = factor(id)),alpha = 0,color = "black")
+     gmap +    geom_polygon(data = final_region,aes(x = long, y = lat,group = factor(id)),alpha = 0,color = "black") + xlab("Longitude") + ylab("Latitude")
 
 
    )
