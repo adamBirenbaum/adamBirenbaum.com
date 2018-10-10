@@ -151,7 +151,7 @@ server <- function(input, output,session) {
    output$map <- renderPlot({
      
      gmap <<- get_map_safely(gbbox,zoom = gzoom, maptype = "terrain")
-     gmap <<- ggmap(gmap)
+     gmap <<- ggmap(gmap) + xlab("Longitude") + ylab("Latitude")
      gmap
      
    })
