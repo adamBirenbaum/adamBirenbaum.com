@@ -66,7 +66,9 @@ body <- dashboardBody(
                               brush = brushOpts(
                                 id = "plot_brush",
                                 resetOnNew = TRUE
-                              ))
+                              )),
+                   helpText("To zoom-in click and drag a region, and double-click that region"),
+                   helpText("To zoom-out double-click anywhere on the plot")
                )
         )
         
@@ -114,7 +116,9 @@ body <- dashboardBody(
                               brush = brushOpts(
                                 id = "integration_plot_brush",
                                 resetOnNew = TRUE
-                              ))
+                              )),
+                   helpText("To zoom-in click and drag a region, and double-click that region"),
+                   helpText("To zoom-out double-click anywhere on the plot")
                )
         )
         
@@ -151,7 +155,9 @@ body <- dashboardBody(
                               brush = brushOpts(
                                 id = "derivative_plot_brush",
                                 resetOnNew = TRUE
-                              ))
+                              )),
+                   helpText("To zoom-in click and drag a region, and double-click that region"),
+                   helpText("To zoom-out double-click anywhere on the plot")
                )
         )
         
@@ -221,7 +227,9 @@ body <- dashboardBody(
                               brush = brushOpts(
                                 id = "system_plot_brush",
                                 resetOnNew = TRUE
-                              ))
+                              )),
+                   helpText("To zoom-in click and drag a region, and double-click that region"),
+                   helpText("To zoom-out double-click anywhere on the plot")
                )
         )
         
