@@ -65,6 +65,24 @@
     </item>
     
     <item>
+      <title>Heat Transfer Simulation</title>
+      <link>/project/heat-transfer-sim/</link>
+      <pubDate>Wed, 27 Apr 2016 00:00:00 -0500</pubDate>
+      
+      <guid>/project/heat-transfer-sim/</guid>
+      <description>&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum. Sed ac faucibus dolor, scelerisque sollicitudin nisi. Cras purus urna, suscipit quis sapien eu, pulvinar tempor diam. Quisque risus orci, mollis id ante sit amet, gravida egestas nisl. Sed ac tempus magna. Proin in dui enim. Donec condimentum, sem id dapibus fringilla, tellus enim condimentum arcu, nec volutpat est felis vel metus. Vestibulum sit amet erat at nulla eleifend gravida.&lt;/p&gt;
+
+&lt;p&gt;Nullam vel molestie justo. Curabitur vitae efficitur leo. In hac habitasse platea dictumst. Sed pulvinar mauris dui, eget varius purus congue ac. Nulla euismod, lorem vel elementum dapibus, nunc justo porta mi, sed tempus est est vel tellus. Nam et enim eleifend, laoreet sem sit amet, elementum sem. Morbi ut leo congue, maximus velit ut, finibus arcu. In et libero cursus, rutrum risus non, molestie leo. Nullam congue quam et volutpat malesuada. Sed risus tortor, pulvinar et dictum nec, sodales non mi. Phasellus lacinia commodo laoreet. Nam mollis, erat in feugiat consectetur, purus eros egestas tellus, in auctor urna odio at nibh. Mauris imperdiet nisi ac magna convallis, at rhoncus ligula cursus.&lt;/p&gt;
+
+&lt;p&gt;Cras aliquam rhoncus ipsum, in hendrerit nunc mattis vitae. Duis vitae efficitur metus, ac tempus leo. Cras nec fringilla lacus. Quisque sit amet risus at ipsum pharetra commodo. Sed aliquam mauris at consequat eleifend. Praesent porta, augue sed viverra bibendum, neque ante euismod ante, in vehicula justo lorem ac eros. Suspendisse augue libero, venenatis eget tincidunt ut, malesuada at lorem. Donec vitae bibendum arcu. Aenean maximus nulla non pretium iaculis. Quisque imperdiet, nulla in pulvinar aliquet, velit quam ultrices quam, sit amet fringilla leo sem vel nunc. Mauris in lacinia lacus.&lt;/p&gt;
+
+&lt;p&gt;Suspendisse a tincidunt lacus. Curabitur at urna sagittis, dictum ante sit amet, euismod magna. Sed rutrum massa id tortor commodo, vitae elementum turpis tempus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean purus turpis, venenatis a ullamcorper nec, tincidunt et massa. Integer posuere quam rutrum arcu vehicula imperdiet. Mauris ullamcorper quam vitae purus congue, quis euismod magna eleifend. Vestibulum semper vel augue eget tincidunt. Fusce eget justo sodales, dapibus odio eu, ultrices lorem. Duis condimentum lorem id eros commodo, in facilisis mauris scelerisque. Morbi sed auctor leo. Nullam volutpat a lacus quis pharetra. Nulla congue rutrum magna a ornare.&lt;/p&gt;
+
+&lt;p&gt;Aliquam in turpis accumsan, malesuada nibh ut, hendrerit justo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque sed erat nec justo posuere suscipit. Donec ut efficitur arcu, in malesuada neque. Nunc dignissim nisl massa, id vulputate nunc pretium nec. Quisque eget urna in risus suscipit ultricies. Pellentesque odio odio, tincidunt in eleifend sed, posuere a diam. Nam gravida nisl convallis semper elementum. Morbi vitae felis faucibus, vulputate orci placerat, aliquet nisi. Aliquam erat volutpat. Maecenas sagittis pulvinar purus, sed porta quam laoreet at.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Linear Algebra tutorial doc</title>
       <link>/project/lin-tutorial-doc/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 -0500</pubDate>
@@ -251,71 +269,6 @@
       
       <guid>/publication/clothing-search/</guid>
       <description>&lt;p&gt;More detail can easily be written here using &lt;em&gt;Markdown&lt;/em&gt; and $\rm \LaTeX$ math code.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title> </title>
-      <link>/project/lin-tutorial-doc/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/project/lin-tutorial-doc/</guid>
-      <description>&lt;div id=&#34;linear-algebgra-tutorial&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Linear Algebgra Tutorial&lt;/h2&gt;
-&lt;div id=&#34;vector-basics&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;Vector Basics&lt;/h3&gt;
-&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[\vec{v} \text{ is the vector addition of the scaled basis vectors: }\hat{i} \text{,} \hat{j}\]&lt;/span&gt;&lt;/p&gt;
-&lt;div class=&#34;figure&#34;&gt;
-&lt;img src=&#34;/img/gifs/vector_basic.gif&#34; /&gt;
-
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&#34;transformations&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;Transformations&lt;/h3&gt;
-&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[\vec{A} \text{ is a transformation of space that moves its basis vectors } \hat{i} \text{ and } \hat{j}\]&lt;/span&gt; &lt;img src=&#34;/img/gifs/transformation.gif&#34; /&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;matrix-multiplication&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;Matrix Multiplication&lt;/h3&gt;
-&lt;p&gt;Matrix Multiplication is just the composition of two transformations&lt;/p&gt;
-&lt;div class=&#34;figure&#34;&gt;
-&lt;img src=&#34;/img/gifs/matrix_composition_gif.gif&#34; /&gt;
-
-&lt;/div&gt;
-&lt;p&gt;&lt;img src=&#34;/img/gifs/matrix_composition_gif2.gif&#34; /&gt; &lt;img src=&#34;/img/gifs/matrix_composition_inverse_gif.gif&#34; /&gt; &lt;img src=&#34;/img/gifs/matrix_composition_inverse_gif2.gif&#34; /&gt; &lt;img src=&#34;/img/gifs/matrix_composition_inverse_self_gif.gif&#34; /&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;systems-of-equations&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;Systems of Equations&lt;/h3&gt;
-&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[\text{For a system of equations}\]&lt;/span&gt; &lt;span class=&#34;math display&#34;&gt;\[\begin{align}
-                -3x_1 + 2x_2 &amp;amp; = -4   \\
-                2x_1 - 2x_2 &amp;amp; = 2
-                \end{align}
-                \]&lt;/span&gt; &lt;span class=&#34;math display&#34;&gt;\[\begin{align}
-                A\vec{x} &amp;amp; = \vec{b}  \\
-                \begin{bmatrix} -3  &amp;amp; 2 \\ 2  &amp;amp; -2 \end{bmatrix}
-                \begin{bmatrix} x_1  \\ x_2   \end{bmatrix} &amp;amp;= \begin{bmatrix} -4  \\ 2   \end{bmatrix}
-                \end{align} \]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[\text{The solution to the equation is the vector which after a transformation given by }A\text{, lands on }\begin{bmatrix} -4  \\ 2   \end{bmatrix} \]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[ \text{Notice that for a transformation matrix }A\text{ whose determinant } = 0\text{, the spanned vectors collapse onto a line}\]&lt;/span&gt; &lt;span class=&#34;math display&#34;&gt;\[A =  \begin{bmatrix} 1  &amp;amp; -2 \\ 2  &amp;amp; -4 \end{bmatrix} \]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[\begin{align}\begin{vmatrix}A\end{vmatrix} &amp;amp;= (1 * -4) - (2 * -2) \\
-                &amp;amp; = 0
-                \end{align}\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[\text{If }A \text{ were part of a system of equations } A\vec{x} = \vec{b}  \text{,}\]&lt;/span&gt;&lt;span class=&#34;math display&#34;&gt;\[\text{then the system only has a solution if }\vec{b} \text{ lies on the spanned line}\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/img/gifs/systems.gif&#34; /&gt; &lt;img src=&#34;/img/gifs/systems_inverse.gif&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/img/gifs/systems_det_span.gif&#34; /&gt; &lt;img src=&#34;/img/gifs/systems_det_solutions.gif&#34; /&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;eigenvectors&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;EigenVectors&lt;/h3&gt;
-&lt;p&gt;Eigenvectors are special vectors that only scale under a transformation&lt;/p&gt;
-&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
-                 A =  \begin{bmatrix} 1  &amp;amp; 1 \\ 2  &amp;amp; 3 \end{bmatrix}
-                \]&lt;/span&gt; &lt;span class=&#34;math display&#34;&gt;\[
-                 v_1 = \begin{bmatrix} -0.344  \\ -0.939  \end{bmatrix} ; \lambda_1 = 3.73
-                \]&lt;/span&gt; &lt;span class=&#34;math display&#34;&gt;\[
-                 v_2 = \begin{bmatrix} -0.807  \\ 0.591  \end{bmatrix} ; \lambda_2 = 0.27
-                \]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/img/gifs/eigen_gif.gif&#34; /&gt; &lt;img src=&#34;/img/gifs/eigen_lambda_gif.gif&#34; /&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
 </description>
     </item>
     
