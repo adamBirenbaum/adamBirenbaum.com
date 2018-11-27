@@ -92,7 +92,8 @@ body <- dashboardBody(
                    
                   
                      uiOutput("ui_transient_image"),
-                     h3("Initial Setup"),
+
+                     
                      
                      plotOutput("draw_setup")
               )

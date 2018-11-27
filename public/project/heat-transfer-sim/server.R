@@ -58,7 +58,7 @@ server <- function(input,output){
                                     material,k))
     
     ggplot(df,aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax)) + geom_rect(fill = "lightblue",alpha = 0.5,color = "black") + 
-    annotate("text",x =text_df$x, y = text_df$y, label = text_df$label,parse = T) + coord_equal() +theme_void()
+    annotate("text",x =text_df$x, y = text_df$y, label = text_df$label,parse = T) + coord_equal() +theme_void() + labs(title = "Setup") + theme(title = element_text(size = 20))
     
     
     
@@ -215,7 +215,7 @@ server <- function(input,output){
 
     ggplot(df, aes(x = x, y =y, z = temp)) + geom_raster(aes(fill = temp))+geom_contour(color = "black",size = .2) +
       scale_fill_distiller(expression("Temp."~"("*degree*"C)"),palette = "Spectral") + 
-      coord_equal() + theme_minimal() + labs(x = "Width (cm)", y = "Height (cm)",title = "Steady State") + theme(panel.grid = element_blank())
+      coord_equal() + theme_minimal() + labs(x = "Width (cm)", y = "Height (cm)",title = "Steady State") + theme(panel.grid = element_blank()) +theme(plot.title = element_text(size = 20))
     
     
     
@@ -298,8 +298,9 @@ server <- function(input,output){
   observeEvent(input$get_transient,{
     
     output$ui_transient_image <- renderUI({
-      imageOutput("transient")
-    })
+      imageOutput("transient",width = "100%")
+      
+      })
  
     
     
@@ -467,7 +468,7 @@ server <- function(input,output){
 
     g <- ggplot(df, aes(x = x, y =y, z = temp)) + geom_raster(aes(fill = temp),show.legend = F)+    coord_equal() +theme_void()+
       transition_states(state,transition_length = 1,state_length = 100, wrap = F) + ease_aes('linear') + scale_fill_distiller(palette = "Spectral") + 
-      labs(title = 'Transient - Time: {closest_state} s.')
+      labs(title = 'Transient - Time: {closest_state} s.') + theme(plot.title = element_text(size = 20))
     if (n_time_steps < 50){
       gg <- animate(g,nframes = 100, fps = 20)
     }else if (n_time_steps < 100){
