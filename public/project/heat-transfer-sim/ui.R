@@ -1,33 +1,33 @@
 library(shiny)
 library(ggplot2)
 library(shinydashboard)
+library(gganimate)
+
 
 
 
 common_path <- "public/project/heat-transfer-sim/"
 if (Sys.info()["nodename"] == "ADAM-DROPLET"){
-  path_to_main <- paste0("/var/www/adambirenbaum.com/",common_path)
+  path_to_main <<- paste0("/var/www/adambirenbaum.com/",common_path)
 }else{
-  path_to_main <- paste0("~/adambirenbaum.com/",common_path)
+  path_to_main <<- paste0("~/adambirenbaum.com/",common_path)
 }
 
 material_df <<- read.csv(paste0(path_to_main,"conduction_material.csv"),stringsAsFactors = F)
 
-
-
 header <-  dashboardHeader(
-  title = "Numerical Methods in Heat Transfer"
+  title = "Heat Transfer Simulation on a Rectangular Plate",titleWidth = "100%"
 )
 sidebar <- dashboardSidebar(
-  sidebarMenu(
-    menuItem("Steady-State",tabName = "steady")
-  )
-  
+  # sidebarMenu(
+  #   menuItem("Steady-State",tabName = "steady")
+  # )
+  # 
+  NULL
 )
 
 body <- dashboardBody(
-  tabItems(
-    tabItem(tabName = "steady",
+
             fluidRow(
               column(width = 5,
                      box(title = NULL,status = "primary",solidHeader = F,width = NULL,
@@ -37,16 +37,23 @@ body <- dashboardBody(
                                   sliderInput(inputId = "dim_y",label = h4("Height (cm)"),min = 1,max = 100,value = 10)
                            ),
                            column(width = 4,
-                                  sliderInput("n_nodes",h4("# Nodes"), min = 50, max = 1000,value = 500)
+                                  sliderInput("n_nodes",h4("# Nodes"), min = 20, max = 1000,value = 100),
+                                  radioButtons("sim_type",h4("Simulation Type"),choices = c("Steady State", "Transient"),
+                                               selected = "Steady State")
+                                  
                            ),
                            column(width = 4,
                                   selectizeInput("material",h4("Material"),choices = material_df$material,selected = "Aluminum"),
-                                  textOutput("material_conduct")
+                                  textOutput("material_conduct"),
+                                  uiOutput("ui_transient")
                                   
                            )
                          )
                          
                      ),
+                     
+                     uiOutput("ui_transient_button"),
+                 
                      box(title = NULL,width = NULL,
                          
                          
@@ -82,8 +89,9 @@ body <- dashboardBody(
               ),
               column(width = 7,
                      plotOutput("steady_state"),
-                     br(),
-
+                   
+                  
+                     uiOutput("ui_transient_image"),
                      h3("Initial Setup"),
                      
                      plotOutput("draw_setup")
@@ -91,12 +99,10 @@ body <- dashboardBody(
               
             )
             
-    )
-  )
-  
+
 )
 
 
 
 
-dashboardPage(header, sidebar, body)
+dashboardPage(header, dashboardSidebar(disable = T), body)
