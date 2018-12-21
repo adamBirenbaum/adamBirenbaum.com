@@ -1,5 +1,5 @@
 server <- function(input, output,session){
-  
+  new_image_path <- NULL
   
   
   convert_to_fraction <- function(x){
@@ -133,13 +133,18 @@ server <- function(input, output,session){
   short <- function(x) paste(x, collapse = ", ")
   
   observeEvent(input$add_make_recipe,{
- 
+    
+
     if (is.null(input$add_img$datapath)){
       str_image <- ""
     }else{
       str_image <- input$add_img$datapath
-      file.rename(str_image,paste0(path_to_recipe,"img/",input$add_title,".",file_ext(str_image)))
-      str_image <- paste0("img/",input$add_title,".",file_ext(str_image))
+      
+      new_title <- gsub(" ","_",input$add_title,fixed = T)
+      new_image_path <<- paste0(path_to_recipe,"img/",new_title,".",file_ext(str_image))
+
+      file.rename(str_image,new_image_path)
+      str_image <- paste0("img/",new_title,".",file_ext(str_image))
     } 
     
     

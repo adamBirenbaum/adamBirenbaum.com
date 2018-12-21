@@ -2,7 +2,7 @@
 library(dplyr)
 
 
-path_to_recipe <<- ifelse(Sys.info()['nodename'] =="DESKTOP-RFKFT3H", "D:/abire/Documents/recipes/", ifelse(Sys.info()['nodename'] == "adamubuntu", "~/adambirenbaum.com/public/project/recipes/","/var/www/adambirenbaum.com/public/project/recipes/")  )
+path_to_recipe <<- ifelse(Sys.info()['nodename'] =="DESKTOP-RFKFT3H", "D:/abire/Documents/recipes/", ifelse(Sys.info()['nodename'] == "adamubuntu", "/home/adam/adambirenbaum.com/public/project/recipes/","/var/www/adambirenbaum.com/public/project/recipes/")  )
 
 recipe_database <- read.csv(paste0(path_to_recipe,"recipe_database.csv"),stringsAsFactors = F)
 recipe_database <- recipe_database[nrow(recipe_database),]
@@ -50,9 +50,11 @@ ingr <- gsub("\n","\n\n",ingr,fixed = T)
 
 direc <-recipe_database$Directions
 img <- recipe_database$Image
+new_title <- gsub(" ","_",recipe_database$Name,fixed = T)
 
 img_files <- list.files(paste0(path_to_recipe,"img/"))
-img <- img_files[grepl(recipe_database$Name,x = img_files,fixed = T)]
+img <- img_files[grepl(new_title,x = img_files,fixed = T)]
+
 if (length(img) != 0){
   img <- paste0(path_to_recipe,"img/",img)
   w <- noquote("400px")
@@ -60,6 +62,8 @@ if (length(img) != 0){
   img <- paste0(path_to_recipe,"img/no_image.png")
   w <- noquote("10px")
 }
+
+
 
 
 ```
