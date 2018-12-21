@@ -201,8 +201,20 @@ server <- function(input, output,session){
     df$data, server = FALSE, escape = FALSE, selection = 'none',options = list(searching = F,pageLength = 10)
   )
   
-  observeEvent(input$filter_name,{
-    
+  observeEvent(c(input$filter_name,input$filter_tag),{
+    new_data <- df$data %>% filter(grepl(input$filter_name,tolower(Name),fixed = T))
+    if(!is.null(input$filter_tag)){
+   
+      tag_list <- strsplit(new_data$Tag,",")
+      tag_list <- lapply(tag_list,function(x) gsub("^ (.*$)","\\1",x))
+      contains_tag <- sapply(tag_list, function(x) any(input$filter_tag %in% x))
+      new_data <- new_data[contains_tag,]
+    }
+
+    output$data <- DT::renderDataTable(new_data
+      , server = FALSE, escape = FALSE, selection = 'none',options = list(searching = F,pageLength = 10)
+    )
     
   })
+  
 }

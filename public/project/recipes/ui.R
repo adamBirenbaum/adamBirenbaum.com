@@ -27,8 +27,8 @@ ui <- navbarPage(
              column(width = 3,
                     textInput("filter_name",label = "Name")
                     ),
-             column(width = 3
-                    
+             column(width = 3,
+                    selectInput("filter_tag",label = "Tag",choices = categories,selected = NULL,multiple = T)
                     )
            ),
            fluidRow(
