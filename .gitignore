@@ -1,3 +1,8 @@
 public/project/run-tracker/total_miles.csv
 public/project/rocky-mt-models/data_files/*
 public/project/rocky-mt-models/data_files/
+public/project/recipes/img/
+public/project/recipes/recipe_csv/
+public/project/recipes/recipe_html/
+public/project/recipes/recipe.Rmd
+public/project/recipes/recipe_database.csv
