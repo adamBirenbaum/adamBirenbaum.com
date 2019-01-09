@@ -3,7 +3,12 @@ library(ggplot2)
 library(gganimate)
 
 
-
+common_path <- "public/project/solar-system-flyby/"
+if (Sys.info()["nodename"] == "ADAM-DROPLET"){
+  path_to_main <<- paste0("/var/www/adambirenbaum.com/",common_path)
+}else{
+  path_to_main <<- paste0("~/adambirenbaum.com/",common_path)
+}
 
 ui <- fluidPage(
   mainPanel(

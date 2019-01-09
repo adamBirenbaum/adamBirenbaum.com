@@ -149,11 +149,11 @@ observeEvent(c(input$velx,input$vely,input$nframes),{
       theme_bw() + coord_fixed() + ylim(-max_y,max_y) + theme(panel.grid.major.y = element_blank(),panel.grid.minor.y = element_blank()) +#+ set_lim(max_val)  
       transition_time(t)
     
+    file_name <- paste0(path_to_main,"orbit_gif.gif")
     anim_gif <- animate(g,nframes = 150,fps = 15)
-    temp_file_name <- paste0(tempfile(),".gif")
-    anim_save(temp_file_name,anim_gif)
+     anim_save(file_name,anim_gif)
     
-    list(src = temp_file_name,width = "100%")
+    list(src = file_name,width = "100%")
   })
   
   
