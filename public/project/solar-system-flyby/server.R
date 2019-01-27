@@ -153,7 +153,7 @@ observeEvent(c(input$velx,input$vely,input$nframes),{
     anim_gif <- animate(g,nframes = 150,fps = 15)
      anim_save(file_name,anim_gif)
     
-    list(src = file_name,width = "100%")
+    list(src = file_name,contentType = 'image/gif',width = "100%")
   })
   
   

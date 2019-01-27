@@ -15,7 +15,7 @@ ui <- fluidPage(
              inputId = "person",
              label = h3("Runner"),
              choices = c("Bo", 
-                         "Rachael", "Adam"),
+                         "Rachael", "Adam","Jo"),
              status = "success",
              checkIcon = list(
                yes = icon("ok", 
