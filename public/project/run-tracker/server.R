@@ -15,7 +15,7 @@ if (is_local){
 
 
 server <- function(input,output,session){
-  phrases <- c("You Go Girl!","Great Job!","Way to Go!","Hell Ya!","You are amazing!","Woohooo","Yahooo!","Frick Ya!","Nice Work","Well Done!","Super Job!","Holy Cats!","Hod Dog, you are incredible!","Glory Hallelujah you are amazing!",
+  phrases <- c("You Go Girl!","Great Job!","Way to Go!","Hell Ya!","You are amazing!","Woohooo","Yahooo!","Holy Moly","Nice Work","Well Done!","Super Job!","Holy Cats!","Hod Dog, you are incredible!","Glory Hallelujah you are amazing!",
                "Out of Sight!","Good Golly!","JEEMINY CHRISTMAS!")
   get_streak <- function(x){
     
@@ -38,13 +38,14 @@ server <- function(input,output,session){
   
   
   output$plot <- renderPlot({
-    miles_df <- read.csv(paste0(path_to_data,"total_miles.csv"),stringsAsFactors = F,colClasses = c("Date","numeric","numeric","numeric","numeric"))
+    miles_df <- read.csv(paste0(path_to_data,"total_miles.csv"),stringsAsFactors = F,colClasses = c("Date","numeric","numeric","numeric","numeric","numeric"))
     
     miles_df <- miles_df %>% filter(Date <= today_date) %>% mutate(Bo = cumsum(Bo),
                                                                    Rachael= cumsum(Rachael),
                                                                    Adam = cumsum(Adam),
-                                                                   Jo = cumsum(Jo)) %>% 
-      gather(key = "Person",value = "Miles",Bo,Rachael,Adam,Jo)
+                                                                   Jo = cumsum(Jo),
+                                                                   Kelsey = cumsum(Kelsey)) %>% 
+      gather(key = "Person",value = "Miles",Bo,Rachael,Adam,Jo,Kelsey)
  
     # browser()
     # miles_df2 <- miles_df %>% group_by(Person) %>% mutate(txt = c(0,diff(Miles)))
@@ -55,16 +56,16 @@ server <- function(input,output,session){
   })
   
   output$table <- renderTable({
-    miles_df <- read.csv(paste0(path_to_data,"total_miles.csv"),stringsAsFactors = F,colClasses = c("Date","numeric","numeric","numeric","numeric"))
+    miles_df <- read.csv(paste0(path_to_data,"total_miles.csv"),stringsAsFactors = F,colClasses = c("Date","numeric","numeric","numeric","numeric","numeric"))
     miles_df <- miles_df %>% filter(Date <= today_date) 
     num_days <- nrow(miles_df) - 1
-    table_df <- data.frame(Runner = c("Bo","Rachael","Adam","Jo"), "Total Miles" = c(sum(miles_df$Bo),sum(miles_df$Rachael), sum(miles_df$Adam),sum(miles_df$Jo)))
+    table_df <- data.frame(Runner = c("Bo","Rachael","Adam","Jo","Kelsey"), "Total Miles" = c(sum(miles_df$Bo),sum(miles_df$Rachael), sum(miles_df$Adam),sum(miles_df$Jo),sum(miles_df$Kelsey)))
 
 
     
     table_df <- table_df %>% mutate("Miles/Day" = Total.Miles/num_days)
-    table_df[["Longest Run"]] <- c(max(miles_df$Bo),max(miles_df$Rachael), max(miles_df$Adam),max(miles_df$Jo))
-    table_df[["Longest Streak"]] <- sapply(list(miles_df$Bo, miles_df$Rachael, miles_df$Adam, miles_df$Jo), get_streak)
+    table_df[["Longest Run"]] <- c(max(miles_df$Bo),max(miles_df$Rachael), max(miles_df$Adam),max(miles_df$Jo),max(miles_df$Kelsey))
+    table_df[["Longest Streak"]] <- sapply(list(miles_df$Bo, miles_df$Rachael, miles_df$Adam, miles_df$Jo,miles_df$Kelsey), get_streak)
     table_df <- table_df[order(table_df$Total.Miles,decreasing = T),]
     names(table_df)[2] <- "Total Miles"
     table_df
@@ -73,7 +74,7 @@ server <- function(input,output,session){
   
   
   observeEvent(input$enter,{
-    miles_df <- read.csv(paste0(path_to_data,"total_miles.csv"),stringsAsFactors = F,colClasses = c("Date","numeric","numeric","numeric","numeric"))
+    miles_df <- read.csv(paste0(path_to_data,"total_miles.csv"),stringsAsFactors = F,colClasses = c("Date","numeric","numeric","numeric","numeric","numeric"))
     
 
     miles_df[[input$person]][miles_df$Date == today_date] <- input$miles +   miles_df[[input$person]][miles_df$Date == today_date]
@@ -85,8 +86,9 @@ server <- function(input,output,session){
       miles_df <- miles_df %>% filter(Date <= today_date) %>% mutate(Bo = cumsum(Bo),
                                                                      Rachael= cumsum(Rachael),
                                                                      Adam = cumsum(Adam),
-                                                                     Jo = cumsum(Jo)) %>% 
-        gather(key = "Person",value = "Miles",Bo,Rachael,Adam,Jo)
+                                                                     Jo = cumsum(Jo),
+                                                                     Kelsey = cumsum(Kelsey)) %>% 
+        gather(key = "Person",value = "Miles",Bo,Rachael,Adam,Jo,Kelsey)
       
       ggplot(miles_df, aes(x = Date, y = Miles, group = Person, color = Person)) + geom_line(size = 2) +geom_point(size = 4)+ theme_minimal() + ggtitle("Running Progress")+
         theme(axis.text = element_text(size = 14), axis.title = element_text(size = 18),plot.title = element_text(size = 28),legend.text = element_text(size = 18),
@@ -94,13 +96,13 @@ server <- function(input,output,session){
     })
     
     output$table <- renderTable({
-      miles_df <- read.csv(paste0(path_to_data,"total_miles.csv"),stringsAsFactors = F,colClasses = c("Date","numeric","numeric","numeric","numeric"))
+      miles_df <- read.csv(paste0(path_to_data,"total_miles.csv"),stringsAsFactors = F,colClasses = c("Date","numeric","numeric","numeric","numeric","numeric"))
       miles_df <- miles_df %>% filter(Date <= today_date) 
       num_days <- nrow(miles_df) - 1
-      table_df <- data.frame(Runner = c("Bo","Rachael","Adam","Jo"), "Total Miles" = c(sum(miles_df$Bo),sum(miles_df$Rachael), sum(miles_df$Adam),sum(miles_df$Jo)))
+      table_df <- data.frame(Runner = c("Bo","Rachael","Adam","Jo","Kelsey"), "Total Miles" = c(sum(miles_df$Bo),sum(miles_df$Rachael), sum(miles_df$Adam),sum(miles_df$Jo),sum(miles_df$Kelsey)))
       table_df <- table_df %>% mutate("Miles/Day" = Total.Miles/num_days)
-      table_df[["Longest Run"]] <- c(max(miles_df$Bo),max(miles_df$Rachael), max(miles_df$Adam),max(miles_df$Jo))
-      table_df[["Longest Streak"]] <- sapply(list(miles_df$Bo, miles_df$Rachael, miles_df$Adam,miles_df$Jo), get_streak)
+      table_df[["Longest Run"]] <- c(max(miles_df$Bo),max(miles_df$Rachael), max(miles_df$Adam),max(miles_df$Jo),max(miles_df$Kelsey))
+      table_df[["Longest Streak"]] <- sapply(list(miles_df$Bo, miles_df$Rachael, miles_df$Adam,miles_df$Jo,miles_df$Kelsey), get_streak)
       table_df <- table_df[order(table_df$Total.Miles,decreasing = T),]
       names(table_df)[2] <- "Total Miles"
       table_df
