@@ -20,14 +20,6 @@
     
     <url>
     
-      <loc>/privacy/</loc>
-      <lastmod>2018-06-28T00:00:00-05:00</lastmod>
-    </url>
-    
-  
-    
-    <url>
-    
       <loc>/talk/example-talk/</loc>
       <lastmod>2017-01-01T00:00:00-06:00</lastmod>
     </url>
@@ -54,6 +46,14 @@
     
       <loc>/talk/</loc>
       <lastmod>2017-01-01T00:00:00-06:00</lastmod>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>/project/diff_eq_simulations/</loc>
+      <lastmod>2016-04-27T00:00:00-05:00</lastmod>
     </url>
     
   
