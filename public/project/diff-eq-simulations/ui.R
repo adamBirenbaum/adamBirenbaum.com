@@ -22,7 +22,7 @@ fluidPage(
       sliderInput("l","Length (m)",min = .1,max = 10,value = 1),
       sliderInput("mu","Drag Coeff",min = 0, max = 5, value = .5,step = .5),
       sliderInput("theta","Initial Angle (Degrees)",min = -180,max = 180,value = 90),
-      sliderInput("theta_dot","Initial Ang. Velocity (Rad / s)",min = -10,max = 10,value = 0),
+      sliderInput("theta_dot","Initial Ang. Velocity (Degrees / s)",min = -540,max = 540,value = 0),
       hr(),
       sliderInput("time","Simulation Time",min = 1, max = 20,value = 5),
       fluidRow(

@@ -73,7 +73,7 @@ function(input,output){
     l <- input$l
     mu <- input$mu
     theta <- input$theta * pi / 180
-    theta_dot <- input$theta_dot
+    theta_dot <- input$theta_dot * pi / 180
     
     
     time <- input$time
@@ -137,6 +137,7 @@ function(input,output){
   
   a <- animate(g,nframes = nframes,fps = fps)
   anim_save(filename = "traj.gif",animation = a,path = path_to_main)
+ 
   output$gif1 <- renderImage(list(src =paste0(path_to_main,"/traj.gif"),contentType = 'image/gif' ),deleteFile = T)
   
   })
