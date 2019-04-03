@@ -6,11 +6,11 @@ library(shiny)
 
 
 
-common_path <- "public/project/Diff_Eq_Simulations/"
+common_path <- "public/project/diff-eq-simulations/"
 if (Sys.info()["nodename"] == "ADAM-DROPLET"){
   path_to_main <<- paste0("/var/www/adambirenbaum.com/",common_path)
 }else if(Sys.info()["sysname"] == "Windows"){
-  path_to_main <<- "D:/abire/Documents/Diff_Eq_Simulations/"
+  path_to_main <<- "D:/abire/Documents/diff-eq-simulations/"
 }else{
   path_to_main <<- paste0("~/adambirenbaum.com/",common_path)
 }
