@@ -7,7 +7,7 @@ ui <- fluidPage(
   fluidRow(
     column(
       width = 4,
-      sliderInput("miles",h3("Miles"), min = 0, max = 10, step = 0.1,value = 3)
+      sliderInput("miles",h3("Miles"), min = 0, max = 14, step = 0.1,value = 3)
       
     ),
     column(width = 4,
