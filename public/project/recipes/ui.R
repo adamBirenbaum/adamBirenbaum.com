@@ -33,7 +33,7 @@ ui <- navbarPage(
            ),
            fluidRow(
              column(width = 5,offset = 3,
-                    DT::dataTableOutput("data")   
+                   DT::dataTableOutput("data")   
                     )
            ),
            fluidRow(
@@ -175,7 +175,28 @@ ui <- navbarPage(
            )
 
            
+           ),
+  
+  tabPanel("Edit",
+           fluidRow(
+             column(width = 3,
+                    textInput("edit_filter_name",label = "Name")
+             ),
+             column(width = 3,
+                    selectInput("edit_filter_tag",label = "Tag",choices = categories,selected = NULL,multiple = T)
+             )
+           ),
+           fluidRow(
+             column(width = 5,offset = 3,
+                    DT::dataTableOutput("edit_data")
+             )
+           ),
+           fluidRow(
+             column(width = 6,
+             uiOutput("edit_recipe")
            )
+           )
+  )
   
   
 )
