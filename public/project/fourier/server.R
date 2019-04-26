@@ -315,6 +315,12 @@ server <- function(input,output){
   
   observeEvent(input$animation_enter,{
 
+    withProgress(message = 'Processing', value = 0, {
+      
+      
+      nprog <- 3
+      
+      incProgress(1/nprog, detail = "Solving Fourier Series")
     #df <- animate_fourier(c("-3","3"),c(-pi,0),c(0,pi),5,constant = T)
     n <- input$anim_square_terms
     speed <- switch(as.numeric(input$speed),2,1,.5,.25)
@@ -324,6 +330,8 @@ server <- function(input,output){
     
     df <- animate_fourier3(df,n,speed)
     
+    incProgress(1/nprog, detail = "Making Animation 1/2")
+    
     g1 <- ggplot(df, aes(x = x,y = y,xend = xend,yend =yend,color = factor(grp),linetype = factor(lin))) + geom_segment(size = 2,show.legend = F) + transition_time(time) + ease_aes('linear')+
       coord_fixed(expand = F) + theme_void()
     a1 <- animate(g1, nframes = frames, fps = fps)
@@ -331,6 +339,8 @@ server <- function(input,output){
     anim_save(filename = "a1.gif",animation = a1,path = path_to_folder,height = 250)
     
     output$anim1 <- renderImage(list(src =paste0(path_to_folder,"/a1.gif"),contentType = 'image/gif' ),deleteFile = T)
+    
+    incProgress(1/nprog, detail = "Making Animation 2/2")
     
     tt <- seq(from =0, to = 2, length.out = 100)
     df2 <- df[(nrow(df) - 99):(nrow(df)),1:2]
@@ -344,7 +354,7 @@ server <- function(input,output){
     
     output$anim2 <- renderImage(list(src =paste0(path_to_folder,"/a2.gif"),contentType = 'image/gif' ),deleteFile = T)
     
-    
+    })
   })
   
 
