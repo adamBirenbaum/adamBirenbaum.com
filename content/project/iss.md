@@ -9,7 +9,7 @@ title = "ISS Tracker"
 summary = "Leaflet app displaying the realtime location of the ISS"
 
 # Optional image to display on homepage (relative to `static/img/` folder).
-image_preview = "run.jpg"
+image_preview = "iss.png"
 
 # Tags: can be used for filtering projects.
 # Example: `tags = ["machine-learning", "deep-learning"]`
