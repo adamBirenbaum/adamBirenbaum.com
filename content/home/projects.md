@@ -21,7 +21,7 @@ folder = "project"
 view = 1
 
 # Number of posts to list.
-count = 10
+count = 100
 
 # Filter toolbar.
 
