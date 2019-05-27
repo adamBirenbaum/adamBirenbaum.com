@@ -32,12 +32,12 @@ server <- function(input,output,session){
   
   output$map <- renderLeaflet({
     #autoInvalidate()
-    invalidateLater(5000,session)
+    invalidateLater(12000,session)
 
     loc <- get_lat_and_lon()
     df <- rbind(df,data.frame(Latitude = loc[1],Longitude = loc[2]))
     print(nrow(df))
-    leaflet(data = df) %>% setView(lng = loc[2],lat = loc[1],zoom = 6) %>%
+    leaflet(data = df) %>% setView(lng = loc[2],lat = loc[1],zoom = 5) %>%
       addProviderTiles(providers$Wikimedia) %>% 
       addMarkers(~Longitude,~Latitude,icon = ISSIcon)
 
