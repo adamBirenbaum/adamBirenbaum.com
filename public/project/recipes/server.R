@@ -172,15 +172,28 @@ server <- function(input, output,session){
   make_buttons <- function(FUN, len, id,label,...) {
     inputs <- character(len)
     for (i in seq_len(len)) {
+      #browser()
       inputs[i] <- as.character(FUN(paste0(id, i),label = label[i],...))
     }
     inputs
   }
   
   df <- reactiveValues(data = read.csv(paste0(path_to_recipe,"recipe_database.csv"),stringsAsFactors = F)[,c(1,2,6,7)])
-  observe(
-    
-    df$data$Recipes <- make_buttons(actionButton,nrow(df$data),"recipe_button_",df$data$Name,onclick = 'Shiny.setInputValue(\"select_button\",  this.id,{priority: \"event\"})')
+
+  observe({
+
+    successActionButton <<- function(inputId,label,icon= NULL, width = NULL, ...){
+      #value <- restoreInput(id = inputId, default = NULL)
+      tags$button(id = inputId, style = if (!is.null(width)) 
+        paste0("width: ", validateCssUnit(width), ";"), type = "button", 
+        class = "btn btn-primary action-button btn-lg", label ,...)
+      
+    } 
+   
+    df$data$Recipes <- make_buttons(successActionButton,nrow(df$data),"recipe_button_",df$data$Name,onclick = 'Shiny.setInputValue(\"select_button\",  this.id,{priority: \"event\"})')
+    #df$data <- df$data %>% select(Recipes, Tag, Time, Cost)
+  }
+ 
     
   )
   
@@ -194,27 +207,33 @@ server <- function(input, output,session){
     )
     
   })
-  
+
+
+
 
   
   output$data <- DT::renderDataTable(
-    df$data, server = FALSE, escape = FALSE, selection = 'none',options = list(searching = F,pageLength = 10)
+
+
+      df$data %>% select(Recipes, Tag, Time, Cost), server = FALSE, escape = FALSE, selection = 'none',options = list(searching = F,pageLength = 10) 
+
+   
   )
   
   observeEvent(c(input$filter_name,input$filter_tag),{
     new_data <- df$data %>% filter(grepl(input$filter_name,tolower(Name),fixed = T))
     if(!is.null(input$filter_tag)){
-   
+
       tag_list <- strsplit(new_data$Tag,",")
       tag_list <- lapply(tag_list,function(x) gsub("^ (.*$)","\\1",x))
       contains_tag <- sapply(tag_list, function(x) any(input$filter_tag %in% x))
       new_data <- new_data[contains_tag,]
     }
 
-    output$data <- DT::renderDataTable(new_data
+    output$data <- DT::renderDataTable(new_data %>% select(Recipes, Tag, Time, Cost)
       , server = FALSE, escape = FALSE, selection = 'none',options = list(searching = F,pageLength = 10)
     )
-    
+
   })
   
   

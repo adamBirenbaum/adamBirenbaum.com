@@ -10,7 +10,7 @@ path_to_recipe <<- ifelse(Sys.info()['nodename'] =="DESKTOP-RFKFT3H", "D:/abire/
 categories <- read.csv(paste0(path_to_recipe,"categories.csv"),stringsAsFactors = F)
 #preparation <-  c("",read.csv("D:/abire/Documents/recipes/preparation.csv",stringsAsFactors = F)[,1])
 
-successActionButton <- function(inputId,label,width = NULL) tags$button(id = inputId,type = "button", class = "btn btn-success action-button", label,style = list('width' = width))
+successActionButton <<- function(inputId,label,width = NULL) tags$button(id = inputId,type = "button", class = "btn btn-success action-button", label,style = list('width' = width))
 warningActionButton <- function(inputId,label,width = NULL) tags$button(id = inputId, type = "button", class = "btn btn-warning action-button", label)
 infoActionButton <- function(inputId,label,width = NULL) tags$button(id = inputId, type = "button", class = "btn btn-info action-button", label)
 dangerActionButton <- function(inputId,label,width = NULL) tags$button(id = inputId, type = "button", class = "btn btn-danger action-button", label)
