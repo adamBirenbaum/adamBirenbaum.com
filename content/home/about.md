@@ -32,4 +32,4 @@ weight = 5
 
 # Biography
 
-Adam Birenbaum works part-time developing buisiness intelligence software for Kennedy Communications and is a mechanical engineering student at the University of Wisconsin-Platteville.
+I recently graduated from the University of Wisconsin-Platteville with a mechanical engineering degree.  I enjoy making little web applications of anything that interests me and this is where they live.
