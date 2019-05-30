@@ -9,7 +9,7 @@ title = "Blue Marble"
 summary = "Gif of the earth spinning using yesterday's imagery"
 
 # Optional image to display on homepage (relative to `static/img/` folder).
-image_preview = "earth.png"
+image_preview = "earth2.png"
 
 # Tags: can be used for filtering projects.
 # Example: `tags = ["machine-learning", "deep-learning"]`
