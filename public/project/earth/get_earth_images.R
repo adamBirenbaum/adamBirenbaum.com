@@ -25,7 +25,7 @@ im_year <- year(img_date)
 file_format <- "jpg"
 img_url <- paste0("https://epic.gsfc.nasa.gov/archive/natural/",im_year,"/",im_month,"/",im_day,"/",file_format,"/",img_name,".",file_format)
 
-direct <- "~/NASA/"
+direct <- "/var/www/adambirenbaum.com/public/project/earth/"
 seq_letters <- letters[1:length(img_url)]
 
 for (i in 1:length(img_url)){
@@ -36,10 +36,9 @@ for (i in 1:length(img_url)){
 n <- length(img_url)
 
 
-list.files(path = "~/NASA", pattern = paste0("*.",file_format), full.names = T) %>% 
+list.files(path = "/var/www/adambirenbaum.com/public/project/earth", pattern = paste0("*.",file_format), full.names = T) %>% 
   image_read %>% # reads each image file
   image_join() %>% # joins image
-  #image_morph(frames = n) %>% 
   image_animate(fps=5) %>% # animates, can opt for number of loops
   image_write(paste0(direct,"earth.gif"))
 
