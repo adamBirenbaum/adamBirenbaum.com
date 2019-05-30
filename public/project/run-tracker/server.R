@@ -50,7 +50,7 @@ server <- function(input,output,session){
     # browser()
     # miles_df2 <- miles_df %>% group_by(Person) %>% mutate(txt = c(0,diff(Miles)))
     # miles_df2$x <- 
-    ggplot(miles_df, aes(x = Date, y = Miles, group = Person, color = Person)) + geom_line(size = 2) +geom_point(size = 4) + theme_minimal() + ggtitle("Running Progress")+
+    ggplot(miles_df, aes(x = Date, y = Miles, group = Person, color = Person)) + geom_line(size = 1) + theme_minimal() + ggtitle("Running Progress")+
       theme(axis.text = element_text(size = 14), axis.title = element_text(size = 18),plot.title = element_text(size = 28),legend.text = element_text(size = 18),
             legend.position = "top", legend.title = element_text(size = 24)) + scale_color_discrete("")
   })
