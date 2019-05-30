@@ -90,9 +90,9 @@ server <- function(input,output,session){
                                                                      Kelsey = cumsum(Kelsey)) %>% 
         gather(key = "Person",value = "Miles",Bo,Rachael,Adam,Jo,Kelsey)
       
-      ggplot(miles_df, aes(x = Date, y = Miles, group = Person, color = Person)) + geom_line(size = 2) +geom_point(size = 4)+ theme_minimal() + ggtitle("Running Progress")+
-        theme(axis.text = element_text(size = 14), axis.title = element_text(size = 18),plot.title = element_text(size = 28),legend.text = element_text(size = 18),
-              legend.position = "top", legend.title = element_text(size = 24))+ scale_color_discrete("")
+      ggplot(miles_df, aes(x = Date, y = Miles, group = Person, color = Person)) + geom_line(size = 1) + theme_minimal() + ggtitle("Running Progress")+
+        theme(axis.text = element_text(size = 14), axis.title = element_text(size = 18),plot.title = element_text(size = 28),legend.text = element_text(size = 12),
+              legend.position = "top")+ scale_color_discrete("")
     })
     
     output$table <- renderTable({

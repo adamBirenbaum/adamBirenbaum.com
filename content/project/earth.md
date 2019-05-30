@@ -6,7 +6,7 @@ date = 2018-05-30T00:00:00
 title = "Blue Marble"
 
 # Project summary to display on homepage.
-summary = "Gif of the earth spinning using yesterday's imagery"
+summary = "Gif of the earth spinning using yesterday's satellite imagery"
 
 # Optional image to display on homepage (relative to `static/img/` folder).
 image_preview = "earth2.png"
