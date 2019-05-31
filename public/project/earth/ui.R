@@ -1,4 +1,6 @@
 library(shiny)
+library(shinycssloaders)
+
 
 common_path <- "public/project/earth/"
 if (Sys.info()["nodename"] == "ADAM-DROPLET"){
@@ -14,14 +16,14 @@ current_date <- read.table(paste0(path_to_gif,"date.txt"),stringsAsFactors = F)$
 
 fluidPage(
   fluidRow(
-    column(width=3, offset = 3,
-           h2(current_date)
+    column(width=8,
+           h2(paste0("Daily imagery collected by the DSCOVR satellite's EPIC instrument.  Currently viewing images from:   ",current_date))
            )
   ),
   fluidRow(
     column(width = 12,
            
-           imageOutput("gif")
+           withSpinner(imageOutput("gif"))
            )
   )
   
