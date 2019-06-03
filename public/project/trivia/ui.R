@@ -1,5 +1,6 @@
 library(shiny)
 library(httr)
+library(shinyWidgets)
 
 
 common_path <- "public/project/trivia_game/"

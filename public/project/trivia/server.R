@@ -127,7 +127,16 @@ server <- function(input,output,session){
   
   session_vars <- reactiveValues(team = NULL,team_ready = F, game_ready = F, question= NULL)
   
-  
+  session$onSessionEnded(function(){
+    isolate({
+      try(
+        isolate(vars$games[[session_vars$team$game_name]] <- NULL)
+      )
+      
+      session_vars <<- reactiveValues(team = NULL,team_ready = F, game_ready = F, question= NULL)
+      
+    })
+  })
   
   format_question <<- function(q){
     q <- gsub("&quot;","'",q,fixed = T)
@@ -246,7 +255,9 @@ server <- function(input,output,session){
       score = numeric(0),
       current_turn = character(0),
       start_game = F,
-      game_end = F
+      game_end = F,
+      pts_to_win = NULL
+      
     )
   }
   
@@ -314,7 +325,7 @@ server <- function(input,output,session){
     output$ui_new_game <- renderUI({
       tagList(
         sliderInput("num_teams","Number of Teams",min = 2, max = 10,value = 2),
-        sliderInput("num_win","Score to Win", min = 5, max = 100, value = 50),
+        sliderInput("num_win","Score to Win", min = 1, max = 100, value = 50),
         primaryActionButton("enter_team_num","Start Game")
       )
     })
@@ -328,7 +339,7 @@ server <- function(input,output,session){
     game <- new_game(input$num_teams)
     team <- new_team(game,is_my_turn = T)
     game <- add_team(game,team)
-    
+    game$pts_to_win <- input$num_win
     
     
     isolate({
@@ -404,7 +415,7 @@ server <- function(input,output,session){
     vars$games
     output$ui_wait_for_teams <- renderUI({
       if (session_vars$team_ready){
-        print("in here")
+
         tagList(
           h1(paste0("Game: ", session_vars$team$game_name)),
           h2(paste0("Teams Ready: ",vars$games[[session_vars$team$game_name]]$num_players_joined," / ",vars$games[[session_vars$team$game_name]]$num_players_req))
@@ -434,8 +445,9 @@ server <- function(input,output,session){
     
       
       if (identical(start,T)){
-        print("Start game")
-        PTS_TO_WIN <- isolate(input$num_win)
+
+
+        isolate(PTS_TO_WIN <- vars$games[[session_vars$team$game_name]]$pts_to_win)
         game <- isolate(vars$games[[session_vars$team$game_name]])
         
         if(any(game$score >= PTS_TO_WIN)){
@@ -458,7 +470,7 @@ server <- function(input,output,session){
           output$ui_wait_for_teams <- renderUI(NULL)
           session_vars$game_ready <<- T
           output$ui_game_board <- renderUI({
-            print(" printing scoreboard")
+
             tagList(
               get_scoreboard(game),
               hr(),
@@ -485,7 +497,7 @@ server <- function(input,output,session){
     difficulties <- question$option_difficulties
     button_text <- paste0(names(categories), " - ", names(difficulties))
     button_id <- c("cat1","cat2","cat3")
-    mapply(function(in_id,lab) successActionButton(in_id,lab), button_id,button_text,SIMPLIFY = F)
+    mapply(function(in_id,lab) tagList(successActionButton(in_id,lab),br(),br()), button_id,button_text,SIMPLIFY = F)
   }
   
   # adjust session turns
@@ -576,7 +588,22 @@ server <- function(input,output,session){
       output$ui_question <- renderUI({
         tagList(
           h1(new_question),
-          radioButtons("question_choice",label = "",choices = sample(c(correct,incorrect),length(incorrect) + 1)),
+          
+          
+          prettyRadioButtons(
+            inputId = "question_choice",
+            label = "", 
+            choices  = sample(c(correct,incorrect),length(incorrect) + 1),
+            icon = icon("fire"), 
+            bigger = TRUE,
+            status = "success",
+            animation = "jelly"
+
+          ),
+          
+          
+          #radioButtons("question_choice",label = "",choices = sample(c(correct,incorrect),length(incorrect) + 1)),
+          br(),
           dangerActionButton("question_guess","Submit")
         )
         
@@ -633,10 +660,11 @@ server <- function(input,output,session){
             primaryActionButton("new_game","New Game"),
                   primaryActionButton("join_game","Join Game"))
         })
-        #browser()
+    
         if (length(isolate(vars$games[[session_vars$team$game_name]])) == 0){
           winner <- isolate(vars$winner)
         }else{
+          isolate(PTS_TO_WIN <- vars$games[[session_vars$team$game_name]]$pts_to_win)
           game <- isolate(vars$games[[session_vars$team$game_name]])
           win_ind <- which(game$score >= PTS_TO_WIN)
           winner <- game$teams[win_ind]
