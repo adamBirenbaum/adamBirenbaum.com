@@ -325,7 +325,7 @@ server <- function(input,output,session){
     output$ui_new_game <- renderUI({
       tagList(
         sliderInput("num_teams","Number of Teams",min = 2, max = 10,value = 2),
-        sliderInput("num_win","Score to Win", min = 1, max = 100, value = 50),
+        sliderInput("num_win","Score to Win", min = 5, max = 100, value = 50),
         primaryActionButton("enter_team_num","Start Game")
       )
     })
