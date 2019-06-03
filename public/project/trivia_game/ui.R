@@ -14,24 +14,24 @@ if (Sys.info()["nodename"] == "ADAM-DROPLET"){
 
 
 successActionButton <<- function(inputId,label,width = NULL) tags$button(id = inputId,type = "button", class = "btn btn-success action-button", label,style = list('width' = width))
-warningActionButton <- function(inputId,label,width = NULL) tags$button(id = inputId, type = "button", class = "btn btn-warning action-button", label)
-infoActionButton <- function(inputId,label,width = NULL) tags$button(id = inputId, type = "button", class = "btn btn-info action-button", label)
-dangerActionButton <- function(inputId,label,width = NULL) tags$button(id = inputId, type = "button", class = "btn btn-danger action-button", label)
-primaryActionButton <- function(inputId,label,width = NULL) tags$button(id = inputId, type = "button", class = "btn btn-primary action-button", label)
+warningActionButton <<- function(inputId,label,width = NULL) tags$button(id = inputId, type = "button", class = "btn btn-warning action-button", label)
+infoActionButton <<- function(inputId,label,width = NULL) tags$button(id = inputId, type = "button", class = "btn btn-info action-button", label)
+dangerActionButton <<- function(inputId,label,width = NULL) tags$button(id = inputId, type = "button", class = "btn btn-danger action-button", label)
+primaryActionButton <<- function(inputId,label,width = NULL) tags$button(id = inputId, type = "button", class = "btn btn-primary action-button", label)
 
 
 
 fluidPage(
   fluidRow(
-    column(width = 4,
-           primaryActionButton("new_game","New Game"),
-           primaryActionButton("join_game","Join Game")
-           
-           ),
-    column(width = 4,
-           textOutput("test")
-      
-    )
+    column(width = 10,
+           uiOutput("ui_start"),
+           uiOutput("ui_new_game"),
+           uiOutput("ui_join_game"),
+           uiOutput("ui_wait_for_teams"),
+           uiOutput("ui_game_board"),
+           uiOutput("ui_question")
+           )
+
   )
   
 )
