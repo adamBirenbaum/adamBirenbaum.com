@@ -574,15 +574,15 @@ server <- function(input,output,session){
     difficulties <- difficulties[c(easy_ind,medium_ind,hard_ind)]
     button_text <- paste0(categories, " - ", difficulties)
     button_id <- c("cat1","cat2","cat3")[c(easy_ind,medium_ind,hard_ind)]
-    mapply(function(in_id,lab){
-      if (in_id == "cat3"){
+    mapply(function(in_id,lab,i){
+      if (i == 3){
         return(successActionButton(in_id,lab))
       }else return(tagList(successActionButton(in_id,lab),br(),br()))
         
       
       
       
-    }, button_id,button_text,SIMPLIFY = F)
+    }, button_id,button_text,1:3,SIMPLIFY = F)
   }
   
   # adjust session turns
