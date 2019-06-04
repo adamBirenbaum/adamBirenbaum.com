@@ -197,8 +197,8 @@ server <- function(input,output,session){
     api_result <- api_result$results[[1]]
     q$question <- format_question(api_result$question)
     q$type <- api_result$type
-    q$correct_answer <- api_result$correct_answer
-    q$incorrect_answer <- unlist(api_result$incorrect_answers)
+    q$correct_answer <- format_question(api_result$correct_answer)
+    q$incorrect_answer <- sapply(unlist(api_result$incorrect_answers),format_question,USE.NAMES = F)
     q
   }
   
