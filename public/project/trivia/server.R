@@ -573,7 +573,7 @@ server <- function(input,output,session){
     categories <- categories[c(easy_ind,medium_ind,hard_ind)]
     difficulties <- difficulties[c(easy_ind,medium_ind,hard_ind)]
     button_text <- paste0(categories, " - ", difficulties)
-    button_id <- c("cat1","cat2","cat3")
+    button_id <- c("cat1","cat2","cat3")[c(easy_ind,medium_ind,hard_ind)]
     mapply(function(in_id,lab){
       if (in_id == "cat3"){
         return(successActionButton(in_id,lab))
