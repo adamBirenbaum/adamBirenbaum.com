@@ -1,5 +1,5 @@
 
-server <- function(input,output){
+server <- function(input,output,session){
   
   
   output$mymap <- renderLeaflet(
@@ -75,7 +75,7 @@ server <- function(input,output){
                      'cycling' = 'cycling-road',
                      'walking' = 'foot-walking','driving-car')
     }
-    
+ 
     s <- get_geocode(start)
     s <- get_avg_coord(s,as_vec = T)
     
@@ -92,6 +92,8 @@ server <- function(input,output){
            config = add_headers(Accept="application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8",
                                 Authorization= key),
            body = toJSON(list(locations= list(s),range = time)),content_type_json())
+    }else if(re$status_code != 200){
+      return(NULL)
     }
     
     
@@ -110,6 +112,10 @@ server <- function(input,output){
     
     
     coords1 <- get_isochrones(address,time = 300,profile = vehicle)
+    if (is.null(coords1)){
+      shinyWidgets::sendSweetAlert(session = session, title = NULL,text = tags$span(tags$h2("Bad Address!")), type = "error")
+      return(NULL)
+    }
     Sys.sleep(1)
     coords2 <- get_isochrones(address,time = 600,profile = vehicle)
     Sys.sleep(1)
