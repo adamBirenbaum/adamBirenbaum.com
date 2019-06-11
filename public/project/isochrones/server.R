@@ -4,7 +4,7 @@ server <- function(input,output,session){
   
   output$mymap <- renderLeaflet(
     
-    leaflet() %>% setView(lng = -89.7452665,lat=43.001617,zoom = 13) %>% 
+    leaflet() %>% setView(lng = -89.39236,lat=43.073806,zoom = 11) %>% 
       addTiles()
   )
   
