@@ -1,6 +1,6 @@
 
 server <- function(input,output,session){
-  
+  LOAD <<- T
   
   output$mymap <- renderLeaflet(
     
@@ -75,7 +75,7 @@ server <- function(input,output,session){
                      'cycling' = 'cycling-road',
                      'walking' = 'foot-walking','driving-car')
     }
- 
+    
     s <- get_geocode(start)
     s <- get_avg_coord(s,as_vec = T)
     
@@ -102,14 +102,71 @@ server <- function(input,output,session){
     
   }
   
+  
+  
+  
+#   observeEvent(input$address,{
+#     #invalidateLater(2000,session)
+#     
+#     if (LOAD) return(NULL)
+#     invalidateLater(3000,session)
+#     address <- isolate(input$address)
+#     #browser()
+#     if (address == "") return(NULL)
+#     address <- gsub(",","",address,fixed = T)
+#     
+#     re <- try(GET(paste0(base_url,"/geocode/autocomplete?api_key=",key,"&text=",address)))
+#     if (inherits(re,'try-error')){
+#       bad <- T
+#       
+#     }else if(re$status_code != 200){
+#       bad <- T
+#     }else bad <- F
+#     while(bad){
+#       print("error")
+# 
+#       Sys.sleep(1)
+#       try(re <- GET(paste0(base_url,"/geocode/autocomplete?api_key=",key,"&text=",address)))
+#       if (!inherits(re,'try-error')){
+#         if (re$status_code == 400){
+#           bad <- F
+#           #shinyWidgets::sendSweetAlert(session = session, title = NULL,text = tags$span(tags$h2("Bad Address!")), type = "error")
+#           output$ui_suggested <- renderUI(NULL)
+#           return(NULL)
+#         }
+#         bad <- re$status_code != 200 
+#       }
+# 
+#     }
+#     
+#   
+#   re2 <- content(re)
+#   print(re2)
+#   choices <- unique(sapply(re2$features, function(x) x$properties$name))
+#   print(choices)
+#   output$ui_suggested <- renderUI({
+#     radioButtons("suggested",label = "",choices = choices,selected = choices[1])
+#   })
+#   
+#   
+# })
+#   
+#   observe(
+#     LOAD <<- F
+#   )
   observeEvent(input$enter,{
     
-
+    
     vehicle <- isolate(input$vehicle)
     address <- isolate(input$address)
+    address <- gsub(",","",address,fixed = T)
     
     
+    #browser()
+    #re <- GET(paste0(base_url,"/geocode/autocomplete?api_key=",key,"&text=",address))
+    #re2 <- content(re)
     
+    #sapply(re2$features, function(x) x$properties$name)
     
     coords1 <- get_isochrones(address,time = 300,profile = vehicle)
     if (is.null(coords1)){
@@ -121,21 +178,21 @@ server <- function(input,output,session){
     Sys.sleep(1)
     coords3 <- get_isochrones(address,time = 1200,profile = vehicle)
     
- 
+    
     
     output$mymap <- renderLeaflet(
-    leaflet() %>% setView(lng = median(coords1[,1]),lat=median(coords1[,2]),zoom = 11) %>% 
-      addTiles() %>%  
+      leaflet() %>% setView(lng = median(coords1[,1]),lat=median(coords1[,2]),zoom = 11) %>% 
+        addTiles() %>%  
+        
+        addPolygons(lng = coords3[,1],lat = coords3[,2],weight = 2,fillColor = "red",color = "black") %>%  
+        addPolygons(lng = coords2[,1],lat = coords2[,2],weight = 2,fillColor = "orange",color = "black",fillOpacity = 0.3) %>% 
+        addPolygons(lng = coords1[,1],lat = coords1[,2],weight = 2,fillColor = "yellow",color = "black",fillOpacity = 0.4) %>% 
+        addLegend(colors = c("red","orange","yellow"),labels = c("20 min.", "10 min.", "5 min."),title = "Traveling Time",position = "bottomleft")
       
-      addPolygons(lng = coords3[,1],lat = coords3[,2],weight = 2,fillColor = "red",color = "black") %>%  
-      addPolygons(lng = coords2[,1],lat = coords2[,2],weight = 2,fillColor = "orange",color = "black",fillOpacity = 0.3) %>% 
-      addPolygons(lng = coords1[,1],lat = coords1[,2],weight = 2,fillColor = "yellow",color = "black",fillOpacity = 0.4) %>% 
-      addLegend(colors = c("red","orange","yellow"),labels = c("20 min.", "10 min.", "5 min."),title = "Traveling Time",position = "bottomleft")
-    
     )
     
     
   })
   
   
-}
+  }
