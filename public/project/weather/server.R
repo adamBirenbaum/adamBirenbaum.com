@@ -1,6 +1,6 @@
 zip_coords <- read.csv(paste0(path_to_weather,"zip_coords.csv"),stringsAsFactors = F)
 
-function(input,output){
+function(input,output,session){
   
   get_icon_list <- function(x,size){
     list(src = paste0(path_to_weather,"/www/",x,".png"),contentType = "image/png",
@@ -21,7 +21,19 @@ function(input,output){
     sapply(x$data, function(y) y[[col_name]])
   }
   
-  make_time_plot <- function(hour,col_name,is_hour = T){
+  observeEvent(input$city,{
+    
+    zip <- switch (input$city,
+      'Mt Horeb' = 53572,
+      'Madison' = 53719,
+      'Stoughton'=53589,
+      'Plymouth' = 53073
+    )
+    updateTextInput(session,"zip","Zip Code",value = zip)
+
+  })
+  
+  make_time_plot <- function(hour,col_name,is_hour = T,first_period = T){
     
     hour_y <- extract_from_list(hour,col_name)
     hour_times <- extract_from_list(hour,"time")
@@ -45,18 +57,34 @@ function(input,output){
       blank_seq <- seq(from = 1, to = nn,by = 1)
       title <- "Daily "
     }
+    
     full_times <- hour_times
     hour_times[!(1:nn) %in% blank_seq] <- ""
     df_hour <- data.frame(Time = 1:length(hour_times),y = hour_y)
     names(hour_times) <- 1:length(hour_times)
     
-    
+    if (is_hour){
+      if (first_period){
+        inds <- 1:25
+      }else inds <- 26:50
+      
+      hour_times <- hour_times[inds]
+      full_times <- full_times[inds]
+      df_hour <- df_hour[inds,]
+      inds <- 1:25
+      df_hour$Time <- inds
+      
+    }else{
+      inds <- 1:length(hour_times)
+    }
+
     df2 <- make_annotation_df(df_hour,full_times)
+   
     if (!is.null(df2)){
-      ggplot(df_hour,aes(x = Time, y = y)) + geom_line() +  scale_x_continuous(breaks = 1:length(hour_times),label = hour_times) + 
+      ggplot(df_hour,aes(x = Time, y = y)) + geom_line() +  scale_x_continuous(breaks = inds,label = hour_times) + 
         theme_bw() + ggtitle(paste0(title,col_name)) + ylab(col_name) + geom_text(data = df2, aes(x = x, y = y, label= text),size = 3)
     }else{
-      ggplot(df_hour,aes(x = Time, y = y)) + geom_line() + scale_x_continuous(breaks = 1:length(hour_times),label = hour_times) + 
+      ggplot(df_hour,aes(x = Time, y = y)) + geom_line() + scale_x_continuous(breaks = inds,label = hour_times) + 
         theme_bw() + ggtitle(paste0(title,col_name)) + ylab(col_name)
     }
     
@@ -81,6 +109,10 @@ function(input,output){
     }
     
     if (nrow(df) > 0){
+      # browser()
+      # diff_vec <- diff(df$x)
+      # ind_vec <- (2:(length(diff_vec)+1))[diff_vec > 3]
+      # df[]
       return(df)
     }else return(NULL)
   }
@@ -141,6 +173,9 @@ function(input,output){
     
   })
   
+  output$ui_hour_button <- renderUI(successActionButton("next_hour_button","-> Next 24 Hours"))
+  
+  
   observe({
     
     weather <- weather_data()
@@ -160,8 +195,8 @@ function(input,output){
           h3(weather$minute$summary)
         )
       )
-      
-      output$current_icon <- make_icon(weather$current$icon,300)
+      output$ui_hour_button <- renderUI(successActionButton("next_hour_button","-> Next 24 Hours"))
+      output$current_icon <- make_icon(weather$current$icon,200)
       
       hour_plot_option <- switch(input$hourly_plots,
                                  "Temperature" = "temperature",
@@ -174,6 +209,7 @@ function(input,output){
       )
       
       
+     
       output$hour_plot <- renderPlot(make_time_plot(weather$hour,hour_plot_option))
       
       
@@ -267,6 +303,54 @@ function(input,output){
       tagList(mapply(FUN = make_day_icons,day_icons,day_times,day_temp_high,day_temp_low,day_precip,day_summary,SIMPLIFY = F))
     })
     
+    
+  })
+  
+  observeEvent(input$next_hour_button,{
+    
+    output$ui_hour_button <-  renderUI(successActionButton("prev_hour_button","<- Prev. 24 Hours"))
+    
+    weather <- weather_data()
+    
+    if (is.null(weather)){
+      output$error <- renderUI(h2("Error! Bad zip provided"))
+      return(NULL)
+    }
+    
+    hour_plot_option <- switch(isolate(input$hourly_plots),
+                               "Temperature" = "temperature",
+                               "Chance of Rain" = "precipProbability",
+                               "Dew Point" = "dewPoint",
+                               "Humidity" = "humidity",
+                               "Pressure" = "pressure",
+                               "Wind Speed" = "windSpeed",
+                               "Cloud Cover" = "cloudCover"
+    )
+    output$hour_plot <- renderPlot(make_time_plot(weather$hour,hour_plot_option,first_period = F))
+    
+    
+  })
+  
+  observeEvent(input$prev_hour_button,{
+    output$ui_hour_button <-  renderUI(successActionButton("next_hour_button","-> Next 24 Hours"))
+    
+    weather <- weather_data()
+    
+    if (is.null(weather)){
+      output$error <- renderUI(h2("Error! Bad zip provided"))
+      return(NULL)
+    }
+    
+    hour_plot_option <- switch(isolate(input$hourly_plots),
+                               "Temperature" = "temperature",
+                               "Chance of Rain" = "precipProbability",
+                               "Dew Point" = "dewPoint",
+                               "Humidity" = "humidity",
+                               "Pressure" = "pressure",
+                               "Wind Speed" = "windSpeed",
+                               "Cloud Cover" = "cloudCover"
+    )
+    output$hour_plot <- renderPlot(make_time_plot(weather$hour,hour_plot_option,first_period = T))
     
   })
   
