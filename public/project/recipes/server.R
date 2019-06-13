@@ -186,7 +186,7 @@ server <- function(input, output,session){
       #value <- restoreInput(id = inputId, default = NULL)
       tags$button(id = inputId, style = if (!is.null(width)) 
         paste0("width: ", validateCssUnit(width), ";"), type = "button", 
-        class = "btn btn-primary action-button btn-lg", label ,...)
+        class = "btn btn-primary action-button btn-sm", label ,...)
       
     } 
    
@@ -213,11 +213,11 @@ server <- function(input, output,session){
 
   
   output$data <- DT::renderDataTable(
+    
 
+     df$data %>% select(Recipes, Tag, Time, Cost), server = FALSE, escape = FALSE, selection = 'none',options = list(searching = F,pageLength = 10) 
 
-      df$data %>% select(Recipes, Tag, Time, Cost), server = FALSE, escape = FALSE, selection = 'none',options = list(searching = F,pageLength = 10) 
-
-   
+  
   )
   
   observeEvent(c(input$filter_name,input$filter_tag),{
